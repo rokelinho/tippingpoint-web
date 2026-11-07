@@ -60,10 +60,10 @@
   .rep-head p{color:var(--slate);font-size:16px;margin-top:6px}
   .rep-actions{display:flex;gap:10px;flex-wrap:wrap}
   h3.sec{font-size:22px;font-weight:900;letter-spacing:-.02em;margin:48px 0 16px}
-  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-top:32px}
+  .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:32px}
   .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px 20px}
   .card .k{font-size:13px;color:var(--slate);text-transform:uppercase;letter-spacing:.6px;font-weight:700}
-  .card .v{font-size:26px;font-weight:900;letter-spacing:-.02em;margin-top:6px;font-variant-numeric:tabular-nums}.card .v.bad{color:var(--bad)}.card .v.good{color:var(--good)}
+  .card .v{font-size:26px;font-weight:900;letter-spacing:-.02em;margin-top:6px;font-variant-numeric:tabular-nums;white-space:nowrap}.card .v small{font-size:14px;font-weight:500}.card .v small.line{display:block;white-space:normal;margin-top:2px}.card .v.bad{color:var(--bad)}.card .v.good{color:var(--good)}
   .card.dark{background:var(--ink);color:var(--mist);border-color:var(--ink)}.card.dark .k{color:var(--fog)}.card.dark .v{color:var(--signal)}
   .panel{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px 22px}
   .alert{border-left:4px solid var(--signal);padding:14px 18px;background:var(--paper);border-radius:0 14px 14px 0;margin:10px 0;font-size:17px}
@@ -107,7 +107,8 @@
   .cta .btn{margin-top:32px}
   footer{background:var(--ink);color:#8C96A0;font-size:15px;padding:40px 0;border-top:1px solid #2A3542}
   .legal{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}.legal a{text-decoration:none}.legal a:hover{color:var(--signal)}
-  @media (max-width:900px){.hero-grid{grid-template-columns:1fr;gap:36px}.steps{grid-template-columns:1fr}.hrow{grid-template-columns:120px 1fr 120px}.menu a:not(.btn){display:none}.menu .btn{padding:9px 14px;font-size:14px}}
+  @media (max-width:900px){.hero-grid{grid-template-columns:1fr;gap:36px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.steps{grid-template-columns:1fr}.hrow{grid-template-columns:120px 1fr 120px}.menu a:not(.btn){display:none}.menu .btn{padding:9px 14px;font-size:14px}}
+  @media (max-width:480px){.cards{grid-template-columns:1fr}}
   @media print{.top,.hero,.how,.faq,.cta,footer,.rep-actions,details.tx{display:none!important}#informe{display:block!important}body{background:#fff}}
 </style>
 </head>
@@ -321,9 +322,9 @@
         <div class="card"><div class="k">Gasto medio / mes</div><div class="v">${eur(s.avgSpend)}</div></div>
         <div class="card"><div class="k">Ingreso medio / mes</div><div class="v">${eur(s.avgIncome)}</div></div>
         <div class="card"><div class="k">Ahorro medio / mes</div><div class="v ${net >= 0 ? "good" : "bad"}">${eur(net)}</div></div>
-        <div class="card"><div class="k">Gastos fijos</div><div class="v">${eur(s.fixedMonthly)}<small style="font-size:14px;font-weight:500">/mes</small></div></div>
-        <div class="card"><div class="k">Suscripciones</div><div class="v">${s.subsActive} · ${eur(s.subsMonthly)}<small style="font-size:14px;font-weight:500">/mes</small></div></div>
-        <div class="card dark"><div class="k">A revisar (¿las usas?)</div><div class="v">${eur(s.leakMonthly)}<small style="font-size:14px;font-weight:500;color:var(--fog)">/mes · ${eur(s.leakMonthly * 12)}/año</small></div></div>
+        <div class="card"><div class="k">Gastos fijos</div><div class="v">${eur(s.fixedMonthly)}<small>/mes</small></div></div>
+        <div class="card"><div class="k">Suscripciones</div><div class="v">${eur(s.subsMonthly)}<small>/mes</small><small class="line">${s.subsActive} activas</small></div></div>
+        <div class="card dark"><div class="k">A revisar (¿las usas?)</div><div class="v">${eur(s.leakMonthly)}<small style="color:var(--fog)">/mes</small><small class="line" style="color:var(--fog)">${eur(s.leakMonthly * 12)} al año</small></div></div>
       </div>
       <h3 class="sec">Alertas</h3>${alerts.join("")}
       <h3 class="sec">Gasto e ingreso por mes</h3><div class="panel">${barSvg(s.months, s.months.map(m => s.spendByMonth[m] || 0), s.months.map(m => s.incomeByMonth[m] || 0))}<div class="legend"><i style="background:#C2563B"></i>gasto <i style="background:#2F7D5B"></i>ingreso</div></div>
