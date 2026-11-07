@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Auditor de gastos y suscripciones · Herramienta gratuita · TippingPoint</title>
+<meta name="description" content="Sube el CSV de tu banco y descubre qué suscripciones pagas, cuáles han subido de precio, cobros duplicados y en qué se te va el dinero. Gratis y 100 % privado: todo se procesa en tu navegador.">
+<link rel="canonical" href="https://tippingpoint.es/herramientas/auditor-gastos/">
+<meta property="og:title" content="Auditor de gastos y suscripciones · gratis y privado">
+<meta property="og:description" content="Arrastra el extracto de tu banco y en 2 segundos sabes qué suscripciones pagas, cuáles han subido y dónde se va tu dinero. Nada sale de tu ordenador.">
+<meta property="og:url" content="https://tippingpoint.es/herramientas/auditor-gastos/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta name="theme-color" content="#17202B">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2317202B'/%3E%3Cpath d='M6 24 C14 24 15 8 26 8' stroke='%23F2C230' stroke-width='3.2' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='16' r='2.6' fill='%23F2C230'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,700;0,900;1,400&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Auditor de gastos y suscripciones","applicationCategory":"FinanceApplication","operatingSystem":"Web","url":"https://tippingpoint.es/herramientas/auditor-gastos/","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@type":"Organization","name":"TippingPoint","url":"https://tippingpoint.es/"},"description":"Analiza el extracto CSV de tu banco en el navegador: suscripciones, subidas de precio, cobros duplicados y gasto por categoría. Sin enviar datos a ningún servidor."}
+</script>
+<style>
+  :root{--mist:#F2F4F1;--paper:#FFFFFF;--ink:#17202B;--ink-2:#222D3A;--slate:#5B6673;--fog:#AEB7C0;--line:#D7DCD6;--signal:#F2C230;--signal-soft:#FBEFC4;--deep:#0F4C5C;--spend:#C2563B;--income:#2F7D5B;--bad:#B3261E;--good:#2F7D5B;--max:1180px;--ease:cubic-bezier(.2,.7,.2,1)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:84px}
+  body{font-family:"Schibsted Grotesk",system-ui,sans-serif;background:var(--mist);color:var(--ink);font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  img,svg{display:block}a{color:inherit}
+  :focus-visible{outline:3px solid var(--deep);outline-offset:3px;border-radius:6px}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  .btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font:inherit;font-weight:700;font-size:17px;text-decoration:none;border:2px solid transparent;cursor:pointer;transition:transform .2s var(--ease),background .2s,color .2s}
+  .btn:hover{transform:translateY(-2px)}.btn-main{background:var(--ink);color:var(--mist)}.btn-main:hover{background:var(--ink-2)}
+  .btn-signal{background:var(--signal);color:var(--ink)}.btn-ghost{border-color:var(--ink);color:var(--ink);background:transparent}.btn-ghost:hover{background:var(--ink);color:var(--mist)}
+  .btn-sm{padding:10px 18px;font-size:15px}
+  .top{position:sticky;top:0;z-index:40;background:rgba(242,244,241,.86);backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);box-shadow:0 1px 0 var(--line)}
+  .top .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;height:72px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:21px;letter-spacing:-.02em;text-decoration:none}.logo svg{width:32px;height:32px}
+  .menu{display:flex;align-items:center;gap:30px;font-size:16px}.menu a{text-decoration:none;color:var(--slate)}.menu a:hover{color:var(--ink)}.menu .btn{padding:10px 18px;font-size:15px;color:var(--mist);white-space:nowrap}
+  .crumbs{font-size:15px;color:var(--slate);padding-top:28px}.crumbs a{text-decoration:none}.crumbs a:hover{color:var(--ink)}
+  .kicker{font-size:16px;font-weight:700;color:var(--deep);display:flex;align-items:center;gap:10px}.kicker::before{content:"";width:28px;height:3px;background:var(--signal)}
+  h1{font-size:clamp(38px,5.4vw,66px);line-height:1;letter-spacing:-.04em;font-weight:900;margin-top:16px;max-width:16ch}
+  .lede{color:var(--slate);max-width:58ch;margin-top:20px;font-size:19px}
+  .hero{padding:28px 0 56px}
+  .hero-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:56px;align-items:start}
+  .trust{list-style:none;margin-top:28px;display:grid;gap:10px;font-size:16px;color:var(--slate)}
+  .trust li{display:flex;gap:10px;align-items:flex-start}.trust svg{flex:none;width:20px;height:20px;margin-top:4px}
+  .drop{background:var(--paper);border:2px dashed var(--fog);border-radius:22px;padding:40px 28px;text-align:center;transition:border-color .2s,background .2s,transform .2s;cursor:pointer}
+  .drop.over{border-color:var(--ink);background:var(--signal-soft);transform:scale(1.01)}
+  .drop h3{font-size:22px;font-weight:900;letter-spacing:-.02em}.drop p{color:var(--slate);font-size:16px;margin-top:8px}
+  .drop .or{margin:18px 0 12px;font-size:14px;color:var(--fog)}
+  .drop input{display:none}
+  .banks{margin-top:18px;font-size:14px;color:var(--slate)}
+  .banks b{color:var(--ink);font-weight:700}
+  .status{margin-top:14px;font-size:15px;color:var(--slate);min-height:1.4em}
+  .status.err{color:var(--bad);font-weight:500}
+  /* informe */
+  #informe{display:none;padding:0 0 100px}
+  #informe.show{display:block}
+  .rep-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;padding-top:48px;border-top:2px solid var(--ink)}
+  .rep-head h2{font-size:clamp(28px,3.4vw,44px);line-height:1.05;letter-spacing:-.03em;font-weight:900}
+  .rep-head p{color:var(--slate);font-size:16px;margin-top:6px}
+  .rep-actions{display:flex;gap:10px;flex-wrap:wrap}
+  h3.sec{font-size:22px;font-weight:900;letter-spacing:-.02em;margin:48px 0 16px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-top:32px}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px 20px}
+  .card .k{font-size:13px;color:var(--slate);text-transform:uppercase;letter-spacing:.6px;font-weight:700}
+  .card .v{font-size:26px;font-weight:900;letter-spacing:-.02em;margin-top:6px;font-variant-numeric:tabular-nums}.card .v.bad{color:var(--bad)}.card .v.good{color:var(--good)}
+  .card.dark{background:var(--ink);color:var(--mist);border-color:var(--ink)}.card.dark .k{color:var(--fog)}.card.dark .v{color:var(--signal)}
+  .panel{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px 22px}
+  .alert{border-left:4px solid var(--signal);padding:14px 18px;background:var(--paper);border-radius:0 14px 14px 0;margin:10px 0;font-size:17px}
+  .alert.bad{border-color:var(--bad)}.alert.good{border-color:var(--good)}
+  .tick{font-size:11px;fill:var(--slate)}
+  .legend{font-size:13px;color:var(--slate);margin-top:8px}.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 5px 0 12px;vertical-align:middle}
+  table{width:100%;border-collapse:collapse;font-size:15px}th,td{padding:10px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  th{font-size:12px;color:var(--slate);text-transform:uppercase;letter-spacing:.5px}td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}tr:last-child td{border-bottom:0}
+  td small{color:var(--slate);font-size:13px}
+  .tag{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;border:1px solid var(--line);color:var(--slate);margin:0 4px 4px 0;white-space:nowrap}
+  .tag.bad{color:var(--bad);border-color:var(--bad)}.tag.warn{color:#8a6400;border-color:var(--signal);background:var(--signal-soft)}.tag.good{color:var(--good);border-color:var(--good)}
+  .hrow{display:grid;grid-template-columns:190px 1fr 160px;gap:12px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}
+  .hrow:last-child{border:0}.hlab{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:15px}
+  .hbar{height:10px;background:var(--mist);border-radius:5px;overflow:hidden}.hbar span{display:block;height:100%;background:var(--ink);border-radius:5px}
+  .hval{text-align:right;font-variant-numeric:tabular-nums;font-size:15px}.hval small{color:var(--slate)}
+  select.cat{font:inherit;font-size:14px;padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:var(--mist);color:var(--ink)}
+  details.tx summary{cursor:pointer;color:var(--slate);font-size:16px;padding:6px 0}
+  .tx-tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0}
+  .tx-tools input{font:inherit;font-size:15px;padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--mist);min-width:240px}
+  .note{font-size:15px;color:var(--slate);margin-top:10px}
+  /* como funciona */
+  .how{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:90px 0}
+  .how h2{font-size:clamp(30px,4vw,48px);line-height:1.05;letter-spacing:-.035em;font-weight:900;max-width:20ch;margin-top:16px}
+  .steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:48px}
+  .step{padding:26px 24px;border-radius:18px;border:1px solid var(--line);background:var(--mist)}
+  .step b{display:flex;width:36px;height:36px;border-radius:50%;background:var(--ink);color:var(--signal);align-items:center;justify-content:center;font-weight:900}
+  .step h3{font-size:20px;font-weight:700;margin-top:14px;letter-spacing:-.01em}.step p{color:var(--slate);font-size:16px;margin-top:8px}
+  .faq{padding:90px 0}
+  .faq h2{font-size:clamp(30px,4vw,48px);line-height:1.05;letter-spacing:-.035em;font-weight:900;margin-top:16px}
+  .faq-list{border-top:2px solid var(--ink);margin-top:36px;max-width:820px}
+  .faq details{border-bottom:1px solid var(--line)}
+  .faq summary{list-style:none;cursor:pointer;padding:22px 48px 22px 0;font-size:19px;font-weight:700;letter-spacing:-.01em;position:relative}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"";position:absolute;right:6px;top:50%;width:18px;height:18px;margin-top:-9px;background:linear-gradient(var(--ink),var(--ink)) center/18px 2.5px no-repeat,linear-gradient(var(--ink),var(--ink)) center/2.5px 18px no-repeat;transition:transform .35s var(--ease)}
+  .faq details[open] summary::after{transform:rotate(135deg)}
+  .faq .answer{color:var(--slate);padding:0 48px 24px 0;max-width:62ch}
+  .cta{background:var(--ink);color:var(--mist);padding:90px 0}
+  .cta .kicker{color:var(--signal)}
+  .cta h2{font-size:clamp(30px,4vw,52px);line-height:1.05;letter-spacing:-.035em;font-weight:900;margin-top:16px;max-width:18ch}
+  .cta p{color:var(--fog);max-width:56ch;margin-top:18px}
+  .cta .btn{margin-top:32px}
+  footer{background:var(--ink);color:#8C96A0;font-size:15px;padding:40px 0;border-top:1px solid #2A3542}
+  .legal{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}.legal a{text-decoration:none}.legal a:hover{color:var(--signal)}
+  @media (max-width:900px){.hero-grid{grid-template-columns:1fr;gap:36px}.steps{grid-template-columns:1fr}.hrow{grid-template-columns:120px 1fr 120px}.menu a:not(.btn){display:none}.menu .btn{padding:9px 14px;font-size:14px}}
+  @media print{.top,.hero,.how,.faq,.cta,footer,.rep-actions,details.tx{display:none!important}#informe{display:block!important}body{background:#fff}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="/" aria-label="TippingPoint, ir al inicio">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#17202B"/><path d="M6 24 C14 24 15 8 26 8" stroke="#F2C230" stroke-width="3.2" fill="none" stroke-linecap="round"/><circle cx="16" cy="16" r="2.6" fill="#F2C230"/></svg>
+      TippingPoint
+    </a>
+    <nav class="menu" aria-label="Principal">
+      <a href="/#servicios">Servicios</a>
+      <a href="/herramientas/">Herramientas</a>
+      <a href="/#faq">Preguntas</a>
+      <a class="btn btn-main" href="/#contacto">Diagnóstico gratis</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <p class="crumbs"><a href="/">Inicio</a> · <a href="/herramientas/">Herramientas</a> · Auditor de gastos</p>
+    <div class="hero-grid" style="margin-top:22px">
+      <div>
+        <p class="kicker">Herramienta gratuita</p>
+        <h1>¿Cuánto pagas en suscripciones que ya no usas?</h1>
+        <p class="lede">Arrastra el extracto de tu banco y en dos segundos ves qué suscripciones pagas, cuáles han subido de precio, si hay cobros duplicados y en qué se va tu dinero cada mes.</p>
+        <ul class="trust">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span><b>100 % privado.</b> El fichero se analiza en tu navegador y nunca se envía a ningún servidor. Puedes desconectar el wifi y seguirá funcionando.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg><span><b>Sin registro, sin instalar nada.</b> Exportas el CSV desde la app de tu banco y lo sueltas aquí.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg><span><b>Código abierto.</b> Si quieres automatizarlo (cron, Telegram, categorización con IA), hay una versión Python en <a href="https://github.com/rokelinho/auditor-gastos">GitHub</a>.</span></li>
+        </ul>
+      </div>
+      <div>
+        <label class="drop" id="drop" for="file">
+          <svg viewBox="0 0 48 48" width="44" height="44" fill="none" stroke="#17202B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto 14px"><path d="M24 32V12M15 21l9-9 9 9"/><path d="M8 32v6a2 2 0 0 0 2 2h28a2 2 0 0 0 2-2v-6"/></svg>
+          <h3>Suelta aquí el CSV de tu banco</h3>
+          <p>o haz clic para elegirlo. Puedes soltar varios ficheros (varias cuentas o varios meses). Lo ideal: entre 6 y 12 meses.</p>
+          <input id="file" type="file" accept=".csv,.txt,.tsv,.xlsx,.xls" multiple>
+          <p class="or">— o —</p>
+          <button type="button" class="btn btn-signal btn-sm" id="demo">Probar con datos de ejemplo</button>
+        </label>
+        <p class="banks">Detecta automáticamente <b>ING, Rabobank, ABN AMRO, bunq, Revolut, N26, BBVA, Santander y CaixaBank</b>. Para otros bancos intenta reconocer las columnas de fecha, importe y concepto.</p>
+        <p class="status" id="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="informe" aria-live="polite">
+  <div class="wrap" id="report"></div>
+</section>
+
+<section class="how">
+  <div class="wrap">
+    <p class="kicker">Cómo funciona</p>
+    <h2>Tres pasos, ninguno complicado.</h2>
+    <div class="steps">
+      <div class="step"><b>1</b><h3>Exporta tus movimientos</h3><p>En la app o web de tu banco busca «Exportar» o «Descargar movimientos» y elige CSV (o Excel). Selecciona los últimos 6–12 meses: con menos no se ven bien las recurrencias.</p></div>
+      <div class="step"><b>2</b><h3>Suéltalo aquí</h3><p>Tu navegador limpia los nombres de los comercios, clasifica cada movimiento con unas 500 reglas pensadas para España y Países Bajos, y busca cargos que se repiten a intervalo regular.</p></div>
+      <div class="step"><b>3</b><h3>Revisa y actúa</h3><p>Verás subidas de precio, posibles cobros duplicados, suscripciones que llevan meses cobrando lo mismo y en qué categorías gastas más. Puedes corregir categorías y descargar el informe.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="wrap">
+    <p class="kicker">Preguntas</p>
+    <h2>Lo que suelen preguntarnos.</h2>
+    <div class="faq-list">
+      <details><summary>¿De verdad no se envían mis datos a ningún sitio?</summary><div class="answer">De verdad. Esta página es un fichero HTML con JavaScript; no hay servidor detrás que reciba nada. Puedes comprobarlo abriendo las herramientas de desarrollador del navegador (pestaña «Red») mientras analizas el fichero, o desconectando internet antes de soltarlo. El código está publicado y se puede leer.</div></details>
+      <details><summary>¿Cómo sabe qué es una suscripción?</summary><div class="answer">Busca comercios con dos o más cobros a intervalo regular (semanal, mensual, trimestral, anual…) y de importe parecido, excluyendo categorías de gasto variable como supermercado o restaurantes. Si el último cobro es mayor que los anteriores lo marca como subida de precio; si lleva más de un periodo y medio sin cobrar, como probablemente cancelada.</div></details>
+      <details><summary>Ha clasificado mal un comercio, ¿qué hago?</summary><div class="answer">En la tabla de movimientos puedes cambiar la categoría con el desplegable y el informe se recalcula al instante. El cambio se guarda en tu navegador para la próxima vez. Si crees que es un error general (un comercio muy común que no reconoce), escríbenos y lo añadimos a las reglas.</div></details>
+      <details><summary>Mi banco no está en la lista.</summary><div class="answer">Prueba igualmente: el importador genérico busca columnas que parezcan fecha, importe y concepto, y funciona con la mayoría de bancos españoles. Si falla, envíanos las primeras dos líneas del CSV (la cabecera y un movimiento cualquiera, puedes cambiar los importes) y añadimos tu banco.</div></details>
+      <details><summary>¿Por qué es gratis?</summary><div class="answer">Porque la construimos para nosotros y no cuesta nada que la use más gente. En TippingPoint hacemos automatizaciones como esta, a medida, para pymes: lectura de facturas, conciliaciones, informes que se generan solos. Esta herramienta es una muestra de ese tipo de trabajo.</div></details>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <p class="kicker">Para tu empresa</p>
+    <h2>¿Te gustaría algo así, pero para tus procesos?</h2>
+    <p>Conciliación bancaria automática, facturas que se leen solas, informes que llegan por correo cada lunes. Cuéntanos qué tarea os roba más tiempo y te decimos en una llamada de 30 minutos si se puede automatizar y cuánto costaría.</p>
+    <a class="btn btn-signal" href="/#contacto">Pedir diagnóstico gratuito</a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap legal">
+    <span>© <span id="y">2026</span> TippingPoint · <a href="/herramientas/">Más herramientas gratuitas</a></span>
+    <span><a href="/aviso-legal.html">Aviso legal</a> · <a href="/privacidad.html">Privacidad</a></span>
+  </div>
+</footer>
+
+<script src="rules.js"></script>
+<script src="auditor.js"></script>
+<script>
+(function(){
+  "use strict";
+  document.getElementById("y").textContent = new Date().getFullYear();
+  Auditor.setRules(window.AUDITOR_RULES);
+  const CATS = window.AUDITOR_RULES.map(r => r.name).concat(["Otros"]);
+  const $ = s => document.querySelector(s);
+  const drop = $("#drop"), fileInput = $("#file"), status = $("#status"), report = $("#report"), section = $("#informe");
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const eur = x => { const n = Math.abs(x).toFixed(2), [i, d] = n.split("."); return (x < 0 ? "-" : "") + i.replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "," + d + " €"; };
+  const dm = s => s.slice(8,10) + "/" + s.slice(5,7);
+  let tables = [], overrides = {};
+  try { overrides = JSON.parse(localStorage.getItem("auditor.overrides") || "{}"); } catch (e) {}
+
+  function setStatus(msg, err) { status.textContent = msg; status.className = "status" + (err ? " err" : ""); }
+
+  // ---- lectura de ficheros
+  function decode(buf) {
+    try { return new TextDecoder("utf-8", {fatal:true}).decode(buf); } catch (e) { return new TextDecoder("windows-1252").decode(buf); }
+  }
+  async function readFile(f) {
+    const buf = await f.arrayBuffer();
+    if (/\.xlsx?$/i.test(f.name)) {
+      if (!window.XLSX) {
+        setStatus("Cargando lector de Excel…");
+        await new Promise((ok, ko) => { const s = document.createElement("script"); s.src = "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"; s.onload = ok; s.onerror = () => ko(new Error("No se pudo cargar el lector de Excel. Exporta en CSV.")); document.head.appendChild(s); });
+      }
+      const wb = XLSX.read(buf, {type:"array", cellDates:false});
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const aoa = XLSX.utils.sheet_to_json(ws, {header:1, raw:false, defval:""});
+      let h = 0; for (let i = 0; i < Math.min(15, aoa.length); i++) { const v = new Set(aoa[i].map(x => String(x).toLowerCase().trim())); if ((v.has("fecha") && v.has("importe")) || (v.has("date") && v.has("amount"))) { h = i; break; } }
+      const header = aoa[h].map(x => String(x).trim());
+      const data = aoa.slice(h + 1).filter(r => r.some(x => String(x).trim())).map(r => { const o = {}; header.forEach((k, i) => o[k] = String(r[i] ?? "").trim()); return o; });
+      return { header, data };
+    }
+    return Auditor.readTable(decode(buf));
+  }
+
+  async function handleFiles(files) {
+    if (!files.length) return;
+    try {
+      setStatus("Leyendo " + files.length + (files.length === 1 ? " fichero…" : " ficheros…"));
+      tables = [];
+      for (const f of files) tables.push(await readFile(f));
+      run();
+    } catch (e) { console.error(e); setStatus(e.message || String(e), true); }
+  }
+
+  function run() {
+    const t0 = performance.now();
+    let res;
+    try { res = Auditor.analyze(tables, {overrides}); }
+    catch (e) { console.error(e); setStatus(e.message || String(e), true); return; }
+    render(res);
+    setStatus(`${res.rows.length} movimientos · banco: ${res.banks.join(", ")} · analizado en ${Math.round(performance.now() - t0)} ms, sin salir de tu navegador.`);
+    section.classList.add("show");
+    section.scrollIntoView({behavior:"smooth", block:"start"});
+  }
+
+  drop.addEventListener("dragover", e => { e.preventDefault(); drop.classList.add("over"); });
+  drop.addEventListener("dragleave", () => drop.classList.remove("over"));
+  drop.addEventListener("drop", e => { e.preventDefault(); drop.classList.remove("over"); handleFiles([...e.dataTransfer.files]); });
+  fileInput.addEventListener("change", () => handleFiles([...fileInput.files]));
+  $("#demo").addEventListener("click", e => { e.preventDefault(); e.stopPropagation(); tables = [Auditor.readTable(Auditor.sampleCSV())]; run(); });
+
+  // ---- render
+  function barSvg(labels, v1, v2) {
+    if (!labels.length) return "";
+    const w = 900, h = 240, pl = 60, pb = 34, pt = 14, pw = w - pl - 12, ph = h - pb - pt, mx = Math.max(...v1, ...v2) || 1, n = labels.length, grp = pw / n, bw = grp * 0.36;
+    let s = `<svg viewBox="0 0 ${w} ${h}" width="100%" role="img" aria-label="Gasto e ingreso por mes">`;
+    for (let i = 0; i < 5; i++) { const y = pt + ph - ph * i / 4; s += `<line x1="${pl}" x2="${w-12}" y1="${y}" y2="${y}" stroke="#E6E8E4"/><text x="${pl-6}" y="${y+4}" text-anchor="end" class="tick">${Math.round(mx*i/4).toLocaleString("es-ES")}</text>`; }
+    labels.forEach((lab, i) => { const x0 = pl + i * grp, xb = x0 + (grp - bw * 2) / 2, b1 = ph * v1[i] / mx, b2 = ph * v2[i] / mx;
+      s += `<rect x="${xb}" y="${pt+ph-b1}" width="${bw}" height="${b1}" rx="3" fill="#C2563B"><title>${lab}: gasto ${eur(v1[i])}</title></rect>`;
+      s += `<rect x="${xb+bw+2}" y="${pt+ph-b2}" width="${bw}" height="${b2}" rx="3" fill="#2F7D5B"><title>${lab}: ingreso ${eur(v2[i])}</title></rect>`;
+      s += `<text x="${x0+grp/2}" y="${h-12}" text-anchor="middle" class="tick">${n > 8 ? lab.slice(2) : lab}</text>`; });
+    return s + "</svg>";
+  }
+  function hbars(items, total) {
+    return items.map(([n, v]) => { const p = total ? 100 * v / total : 0; return `<div class="hrow"><span class="hlab" title="${esc(n)}">${esc(n)}</span><span class="hbar"><span style="width:${p.toFixed(1)}%"></span></span><span class="hval">${eur(v)} <small>(${p.toFixed(0)}%)</small></span></div>`; }).join("");
+  }
+
+  function render(res) {
+    const {rows, subs, dups, newM, summary: s} = res;
+    const alerts = [];
+    for (const x of subs) if (x.priceIncrease && x.status !== "probablemente cancelada")
+      alerts.push(`<div class="alert bad"><b>${esc(x.merchant)}</b> ha subido de precio: ${eur(x.previousAmount)} → <b>${eur(x.currentAmount)}</b> (+${x.increasePct.toFixed(0)} %, ${x.period}). Son ${eur(x.annualCost)} al año.</div>`);
+    for (const d of dups) alerts.push(`<div class="alert"><b>Posible cobro duplicado</b>: ${esc(d.merchant)} ${eur(-d.amount)} el ${dm(Auditor.iso(d.date1))} y el ${dm(Auditor.iso(d.date2))}.</div>`);
+    const review = subs.filter(x => x.review);
+    if (review.length) alerts.push(`<div class="alert"><b>Revisa si las usas</b> (llevan ≥ 6 meses cobrando lo mismo): ${review.map(x => esc(x.merchant)).join(", ")}. Juntas suman <b>${eur(review.reduce((a, x) => a + x.annualCost, 0) / 12)}/mes</b>.</div>`);
+    const canc = subs.filter(x => x.status === "probablemente cancelada");
+    if (canc.length) alerts.push(`<div class="alert good">Suscripciones que parecen canceladas: ${canc.map(x => esc(x.merchant)).join(", ")}.</div>`);
+    if (!alerts.length) alerts.push(`<div class="alert good">Sin alertas: ninguna subida de precio ni cobro sospechoso.</div>`);
+
+    const subRows = subs.map(x => {
+      let tags = `<span class="tag">${x.period}</span>`;
+      if (x.priceIncrease) tags += `<span class="tag bad">↑ precio</span>`;
+      if (x.review) tags += `<span class="tag warn">¿la usas?</span>`;
+      if (x.fixed) tags += `<span class="tag">fijo</span>`;
+      if (x.status === "probablemente cancelada") tags += `<span class="tag good">cancelada</span>`; else if (x.status === "reciente") tags += `<span class="tag">nueva</span>`;
+      return `<tr><td><b>${esc(x.merchant)}</b><br><small>${esc(x.category)}</small></td><td>${tags}</td><td class="num">${eur(x.currentAmount)}</td><td class="num">${eur(x.annualCost)}</td><td>día ${x.typicalDay} · ${x.nCharges} cobros<br><small>último ${x.lastDate}</small></td></tr>`;
+    }).join("");
+
+    const total = Object.values(s.spendByCategory).reduce((a, b) => a + b, 0);
+    const movers = s.movers.map(([c, last, base, pct]) => `<tr><td>${esc(c)}</td><td class="num">${eur(base)}</td><td class="num">${eur(last)}</td><td class="num" style="color:${pct > 15 ? 'var(--bad)' : pct < -15 ? 'var(--good)' : 'inherit'}">${pct > 0 ? "▲" : "▼"} ${Math.abs(pct).toFixed(0)} %</td></tr>`).join("");
+    const newRows = newM.map(r => `<tr><td>${esc(r.merchant)}</td><td>${esc(r.category)}</td><td>${r.firstDate}</td><td class="num">${r.n}</td><td class="num">${eur(r.total)}</td></tr>`).join("");
+    const net = s.avgIncome - s.avgSpend;
+
+    report.innerHTML = `
+      <div class="rep-head"><div><h2>Tu informe</h2><p>${s.periodStart} → ${s.periodEnd} · ${s.n} movimientos · medias calculadas sobre meses completos</p></div>
+        <div class="rep-actions"><button class="btn btn-ghost btn-sm" id="dl-html">Descargar informe</button><button class="btn btn-ghost btn-sm" id="dl-csv">Descargar CSV categorizado</button><button class="btn btn-ghost btn-sm" onclick="window.print()">Imprimir / PDF</button></div></div>
+      <div class="cards">
+        <div class="card"><div class="k">Gasto medio / mes</div><div class="v">${eur(s.avgSpend)}</div></div>
+        <div class="card"><div class="k">Ingreso medio / mes</div><div class="v">${eur(s.avgIncome)}</div></div>
+        <div class="card"><div class="k">Ahorro medio / mes</div><div class="v ${net >= 0 ? "good" : "bad"}">${eur(net)}</div></div>
+        <div class="card"><div class="k">Gastos fijos</div><div class="v">${eur(s.fixedMonthly)}<small style="font-size:14px;font-weight:500">/mes</small></div></div>
+        <div class="card"><div class="k">Suscripciones</div><div class="v">${s.subsActive} · ${eur(s.subsMonthly)}<small style="font-size:14px;font-weight:500">/mes</small></div></div>
+        <div class="card dark"><div class="k">A revisar (¿las usas?)</div><div class="v">${eur(s.leakMonthly)}<small style="font-size:14px;font-weight:500;color:var(--fog)">/mes · ${eur(s.leakMonthly * 12)}/año</small></div></div>
+      </div>
+      <h3 class="sec">Alertas</h3>${alerts.join("")}
+      <h3 class="sec">Gasto e ingreso por mes</h3><div class="panel">${barSvg(s.months, s.months.map(m => s.spendByMonth[m] || 0), s.months.map(m => s.incomeByMonth[m] || 0))}<div class="legend"><i style="background:#C2563B"></i>gasto <i style="background:#2F7D5B"></i>ingreso</div></div>
+      <h3 class="sec">Suscripciones y cargos recurrentes</h3><div class="panel" style="overflow-x:auto"><table><thead><tr><th>Comercio</th><th>Etiquetas</th><th class="num">Importe</th><th class="num">Al año</th><th>Cobro</th></tr></thead><tbody>${subRows || '<tr><td colspan="5">No se han detectado cargos recurrentes. Hacen falta al menos 2–3 meses de datos.</td></tr>'}</tbody></table></div>
+      <h3 class="sec">Gasto por categoría</h3><div class="panel">${hbars(Object.entries(s.spendByCategory).slice(0, 12), total)}</div>
+      ${movers ? `<h3 class="sec">Categorías que más han cambiado (${s.comparedMonth} frente a los 3 meses anteriores)</h3><div class="panel" style="overflow-x:auto"><table><thead><tr><th>Categoría</th><th class="num">Media previa</th><th class="num">Último mes</th><th class="num">Cambio</th></tr></thead><tbody>${movers}</tbody></table></div>` : ""}
+      <h3 class="sec">Dónde se va el dinero</h3><div class="panel">${hbars(s.topMerchants, total)}</div>
+      ${newRows ? `<h3 class="sec">Comercios nuevos (últimos 30 días)</h3><div class="panel" style="overflow-x:auto"><table><thead><tr><th>Comercio</th><th>Categoría</th><th>Primera vez</th><th class="num">Nº</th><th class="num">Total</th></tr></thead><tbody>${newRows}</tbody></table></div>` : ""}
+      <h3 class="sec">Movimientos</h3>
+      <details class="tx"><summary>Ver todos los movimientos y corregir categorías (${rows.length})</summary>
+        <div class="tx-tools"><input id="tx-q" placeholder="Filtrar por comercio o categoría…"><span class="note">Cambia la categoría con el desplegable: el informe se recalcula y se recuerda en este navegador.</span></div>
+        <div class="panel" style="overflow-x:auto;max-height:560px;overflow-y:auto"><table id="tx-table"><thead><tr><th>Fecha</th><th>Comercio</th><th>Categoría</th><th class="num">Importe</th></tr></thead><tbody></tbody></table></div>
+      </details>`;
+
+    const tbody = report.querySelector("#tx-table tbody");
+    const drawTx = q => {
+      q = (q || "").toLowerCase();
+      const list = rows.slice().reverse().filter(r => !q || r.merchant.toLowerCase().includes(q) || r.category.toLowerCase().includes(q) || r.description.toLowerCase().includes(q)).slice(0, 600);
+      tbody.innerHTML = list.map(r => `<tr><td>${Auditor.iso(r.date)}</td><td title="${esc(r.description)}">${esc(r.merchant)}</td><td><select class="cat" data-m="${esc(r.merchant)}">${CATS.map(c => `<option${c === r.category ? " selected" : ""}>${esc(c)}</option>`).join("")}</select></td><td class="num" style="color:${r.amount > 0 ? 'var(--income)' : 'var(--spend)'}">${eur(r.amount)}</td></tr>`).join("");
+    };
+    drawTx();
+    report.querySelector("#tx-q").addEventListener("input", e => drawTx(e.target.value));
+    tbody.addEventListener("change", e => {
+      if (!e.target.classList.contains("cat")) return;
+      overrides[e.target.dataset.m] = e.target.value;
+      try { localStorage.setItem("auditor.overrides", JSON.stringify(overrides)); } catch (err) {}
+      const open = true; run(); // recalcula
+      const det = report.querySelector("details.tx"); if (det && open) det.open = true;
+    });
+    report.querySelector("#dl-html").addEventListener("click", () => {
+      const css = document.querySelector("style").textContent;
+      const html = `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Auditoría de gastos ${s.periodEnd}</title><style>${css} body{padding:30px 0} select.cat{border:0;background:none;appearance:none;pointer-events:none}</style></head><body><main><section id="informe" class="show"><div class="wrap">${report.innerHTML.replace(/<div class="rep-actions">[\s\S]*?<\/div><\/div>/, "</div>")}</div></section></main><p style="text-align:center;color:#5B6673;font-size:14px">Generado con tippingpoint.es/herramientas/auditor-gastos/ · los datos no salieron de tu navegador</p></body></html>`;
+      download(`auditoria-gastos-${s.periodEnd}.html`, html, "text/html");
+    });
+    report.querySelector("#dl-csv").addEventListener("click", () => {
+      const q = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
+      const csv = ["fecha;importe;comercio;categoria;descripcion;cuenta;banco", ...rows.map(r => [Auditor.iso(r.date), String(r.amount).replace(".", ","), r.merchant, r.category, r.description, r.account, r.bank].map(q).join(";"))].join("\n");
+      download(`movimientos-categorizados-${s.periodEnd}.csv`, "﻿" + csv, "text/csv");
+    });
+  }
+  function download(name, content, type) {
+    const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([content], {type: type + ";charset=utf-8"})); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  }
+})();
+</script>
+</body>
+</html>
