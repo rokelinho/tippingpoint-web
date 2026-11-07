@@ -271,6 +271,13 @@
   .foot a:hover{color:var(--signal)}
   .legal{margin-top:44px;padding-top:24px;border-top:1px solid #2A3542;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 
+  .tools-band{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;align-items:center;background:var(--ink);color:var(--mist);border-radius:22px;padding:40px 44px;text-decoration:none;position:relative;overflow:hidden;transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+  .tools-band:hover{transform:translateY(-4px);box-shadow:0 30px 50px -30px rgba(23,32,43,.6)}
+  .tools-band::after{content:"";position:absolute;right:-80px;top:-80px;width:240px;height:240px;border-radius:50%;border:2px solid var(--signal);opacity:.18}
+  .tools-band h3{font-size:clamp(24px,2.8vw,34px);line-height:1.1;letter-spacing:-.025em;font-weight:900;margin-top:12px}
+  .tools-band p:not(.kicker){color:var(--fog);margin-top:12px;max-width:62ch;font-size:17px}
+  .tools-band .btn{position:relative;z-index:1}
+  @media (max-width:820px){.tools-band{grid-template-columns:1fr;padding:30px 26px}}
   .progress{position:fixed;left:0;top:0;height:3px;width:100%;background:var(--signal);transform:scaleX(0);transform-origin:left;z-index:60}
 
   /* ---------- scroll reveals ---------- */
@@ -597,6 +604,20 @@
           <div><h3>Trato cercano</h3><p>Hablas siempre con la persona que construye tu solución, sin intermediarios ni comerciales.</p></div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- HERRAMIENTAS -->
+  <section id="herramientas" style="padding-top:0">
+    <div class="wrap">
+      <a class="tools-band reveal" href="/herramientas/">
+        <div>
+          <p class="kicker" style="color:var(--signal)">Nuevo · Herramientas gratuitas</p>
+          <h3>Prueba cómo trabajamos sin pedirnos nada.</h3>
+          <p>Pequeñas herramientas útiles, gratis y sin registro, que funcionan en tu navegador. La primera: un auditor de gastos y suscripciones. Arrastras el extracto de tu banco y te dice qué suscripciones pagas, cuáles han subido y en qué se va tu dinero.</p>
+        </div>
+        <span class="btn btn-signal">Ver herramientas</span>
+      </a>
     </div>
   </section>
 
