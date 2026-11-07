@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Herramientas gratuitas · TippingPoint</title>
+<meta name="description" content="Pequeñas herramientas gratuitas que construimos para nosotros y abrimos a todo el mundo: auditor de gastos y suscripciones, y más en camino. Sin registro y sin enviar datos a ningún servidor.">
+<link rel="canonical" href="https://tippingpoint.es/herramientas/">
+<meta property="og:title" content="Herramientas gratuitas · TippingPoint">
+<meta property="og:description" content="Herramientas útiles, gratis y privadas: funcionan en tu navegador, sin registro.">
+<meta property="og:url" content="https://tippingpoint.es/herramientas/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta name="theme-color" content="#17202B">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2317202B'/%3E%3Cpath d='M6 24 C14 24 15 8 26 8' stroke='%23F2C230' stroke-width='3.2' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='16' r='2.6' fill='%23F2C230'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,700;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{--mist:#F2F4F1;--paper:#FFFFFF;--ink:#17202B;--ink-2:#222D3A;--slate:#5B6673;--fog:#AEB7C0;--line:#D7DCD6;--signal:#F2C230;--signal-soft:#FBEFC4;--deep:#0F4C5C;--max:1180px;--ease:cubic-bezier(.2,.7,.2,1)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Schibsted Grotesk",system-ui,sans-serif;background:var(--mist);color:var(--ink);font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  svg{display:block}a{color:inherit}
+  :focus-visible{outline:3px solid var(--deep);outline-offset:3px;border-radius:6px}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  .btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font:inherit;font-weight:700;font-size:17px;text-decoration:none;border:2px solid transparent;cursor:pointer;transition:transform .2s var(--ease),background .2s,color .2s}
+  .btn:hover{transform:translateY(-2px)}.btn-main{background:var(--ink);color:var(--mist)}.btn-main:hover{background:var(--ink-2)}.btn-signal{background:var(--signal);color:var(--ink)}
+  .top{position:sticky;top:0;z-index:40;background:rgba(242,244,241,.86);backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);box-shadow:0 1px 0 var(--line)}
+  .top .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;height:72px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:21px;letter-spacing:-.02em;text-decoration:none}.logo svg{width:32px;height:32px}
+  .menu{display:flex;align-items:center;gap:30px;font-size:16px}.menu a{text-decoration:none;color:var(--slate)}.menu a:hover{color:var(--ink)}.menu .btn{padding:10px 18px;font-size:15px;color:var(--mist);white-space:nowrap}
+  .hero{padding:72px 0 56px}
+  .kicker{font-size:16px;font-weight:700;color:var(--deep);display:flex;align-items:center;gap:10px}.kicker::before{content:"";width:28px;height:3px;background:var(--signal)}
+  h1{font-size:clamp(40px,5.8vw,74px);line-height:.98;letter-spacing:-.04em;font-weight:900;margin-top:16px;max-width:14ch}
+  .lede{color:var(--slate);max-width:58ch;margin-top:22px;font-size:19px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px;padding:0 0 110px}
+  .tool{position:relative;display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:30px 28px 28px;text-decoration:none;transition:transform .35s var(--ease),box-shadow .35s var(--ease),border-color .3s}
+  .tool:hover{transform:translateY(-6px);box-shadow:0 24px 40px -24px rgba(23,32,43,.35);border-color:var(--ink)}
+  .tool .icon{width:52px;height:52px;border-radius:14px;background:var(--ink);display:flex;align-items:center;justify-content:center}
+  .tool .icon svg{width:28px;height:28px}
+  .tool h2{font-size:25px;line-height:1.15;letter-spacing:-.02em;font-weight:900;margin-top:20px}
+  .tool p{color:var(--slate);font-size:16px;margin-top:10px;flex:1}
+  .tool .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+  .tool .meta span{font-size:13px;font-weight:700;border:1px solid var(--line);padding:4px 11px;border-radius:999px;color:var(--slate)}
+  .tool .meta span.free{background:var(--signal-soft);border-color:var(--signal);color:var(--ink)}
+  .tool .go{margin-top:22px;font-weight:700;display:flex;align-items:center;gap:8px}
+  .tool .go::after{content:"→";transition:transform .3s var(--ease)}.tool:hover .go::after{transform:translateX(5px)}
+  .tool.soon{border-style:dashed;background:transparent;pointer-events:none}
+  .tool.soon .icon{background:var(--line)}.tool.soon h2{color:var(--slate)}
+  .why{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:90px 0}
+  .why-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.2fr);gap:64px;align-items:start}
+  .why h2{font-size:clamp(30px,4vw,48px);line-height:1.05;letter-spacing:-.035em;font-weight:900;margin-top:16px}
+  .why p{color:var(--slate);margin-top:18px;max-width:58ch}
+  .principles{list-style:none;display:grid;gap:0}
+  .principles li{padding:22px 0;border-top:1px solid var(--line);display:grid;grid-template-columns:44px 1fr;gap:18px}
+  .principles li:last-child{border-bottom:1px solid var(--line)}
+  .principles svg{width:34px;height:34px}
+  .principles h3{font-size:20px;font-weight:700;letter-spacing:-.01em}.principles p{font-size:16px;margin-top:4px;max-width:none}
+  .cta{background:var(--ink);color:var(--mist);padding:90px 0}
+  .cta .kicker{color:var(--signal)}
+  .cta h2{font-size:clamp(30px,4vw,52px);line-height:1.05;letter-spacing:-.035em;font-weight:900;margin-top:16px;max-width:18ch}
+  .cta p{color:var(--fog);max-width:56ch;margin-top:18px}.cta .btn{margin-top:32px}
+  footer{background:var(--ink);color:#8C96A0;font-size:15px;padding:40px 0;border-top:1px solid #2A3542}
+  .legal{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}.legal a{text-decoration:none}.legal a:hover{color:var(--signal)}
+  @media (max-width:900px){.why-grid{grid-template-columns:1fr;gap:40px}.menu a:not(.btn){display:none}.menu .btn{padding:9px 14px;font-size:14px}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="/" aria-label="TippingPoint, ir al inicio">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#17202B"/><path d="M6 24 C14 24 15 8 26 8" stroke="#F2C230" stroke-width="3.2" fill="none" stroke-linecap="round"/><circle cx="16" cy="16" r="2.6" fill="#F2C230"/></svg>
+      TippingPoint
+    </a>
+    <nav class="menu" aria-label="Principal">
+      <a href="/#servicios">Servicios</a>
+      <a href="/herramientas/" aria-current="page" style="color:var(--ink);font-weight:700">Herramientas</a>
+      <a href="/#faq">Preguntas</a>
+      <a class="btn btn-main" href="/#contacto">Diagnóstico gratis</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <p class="kicker">Herramientas gratuitas</p>
+    <h1>Cosas útiles que hacemos para nosotros, abiertas para ti.</h1>
+    <p class="lede">Pequeñas herramientas que resuelven un problema concreto. Funcionan en tu navegador, no piden registro y no envían tus datos a ningún servidor. Iremos añadiendo más.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap grid">
+    <a class="tool" href="/herramientas/auditor-gastos/">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#F2C230" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/><circle cx="19" cy="6" r="1.2" fill="#F2C230" stroke="none"/></svg></div>
+      <h2>Auditor de gastos y suscripciones</h2>
+      <p>Arrastra el extracto CSV de tu banco y descubre qué suscripciones pagas, cuáles han subido de precio, cobros duplicados y en qué se va tu dinero cada mes.</p>
+      <div class="meta"><span class="free">Gratis</span><span>Sin registro</span><span>Datos en tu navegador</span><span>ING · Rabobank · BBVA · Santander · Revolut…</span></div>
+      <span class="go">Probar ahora</span>
+    </a>
+    <div class="tool soon" aria-disabled="true">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#5B6673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></div>
+      <h2>Semáforo de la luz</h2>
+      <p>Te dice a qué horas de hoy y mañana sale más barato poner la lavadora, el lavavajillas o cargar el coche, según la tarifa horaria de tu país.</p>
+      <div class="meta"><span>Próximamente</span><span>España · Países Bajos</span></div>
+    </div>
+    <div class="tool soon" aria-disabled="true">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#5B6673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M8 11l4 4 4-4"/><rect x="4" y="17" width="16" height="4" rx="1"/></svg></div>
+      <h2>Más en camino</h2>
+      <p>¿Tienes una tarea repetitiva que te gustaría ver convertida en herramienta? Escríbenos a <b style="color:var(--ink)">roque@tippingpoint.es</b> y, si le sirve a más gente, la construimos y la publicamos aquí.</p>
+      <div class="meta"><span>Sugerencias abiertas</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="why">
+  <div class="wrap why-grid">
+    <div>
+      <p class="kicker">Por qué las publicamos</p>
+      <h2>Es la mejor forma de enseñar cómo trabajamos.</h2>
+      <p>Cada herramienta nace de una necesidad real nuestra o de un cliente. Publicarlas nos obliga a hacerlas bien, nos trae conversaciones interesantes y, de paso, muestra el tipo de automatización que construimos para pymes.</p>
+    </div>
+    <ul class="principles">
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><div><h3>Privadas por diseño</h3><p>Siempre que es posible, el procesamiento ocurre en tu navegador. No hay base de datos, no hay cuentas, no hay nada que filtrar.</p></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg><div><h3>Código abierto</h3><p>El código está en GitHub. Si sabes programar, puedes revisarlo, adaptarlo o automatizarlo a tu gusto.</p></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><div><h3>Sin trampa</h3><p>No hay versión premium ni registro «para desbloquear». Si algún día una herramienta se convierte en producto, lo diremos claramente.</p></div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <p class="kicker">Para tu empresa</p>
+    <h2>¿Una de estas, pero a medida de tu negocio?</h2>
+    <p>Lectura automática de facturas, conciliaciones, informes que se generan solos, agentes que responden a tus clientes. Cuéntanos qué tarea os roba más tiempo y en una llamada de 30 minutos te decimos si se puede automatizar.</p>
+    <a class="btn btn-signal" href="/#contacto">Pedir diagnóstico gratuito</a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap legal">
+    <span>© <span id="y">2026</span> TippingPoint</span>
+    <span><a href="/aviso-legal.html">Aviso legal</a> · <a href="/privacidad.html">Privacidad</a></span>
+  </div>
+</footer>
+<script>document.getElementById("y").textContent=new Date().getFullYear()</script>
+</body>
+</html>
