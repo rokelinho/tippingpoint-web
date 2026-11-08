@@ -116,9 +116,12 @@
   /* ------------------------------------------------------------------
      Hero: plano + mapa de proceso
   ------------------------------------------------------------------ */
-  .hero{position:relative;padding:56px 0 72px;overflow:hidden;
-    background-image:linear-gradient(var(--plan) 1px,transparent 1px),linear-gradient(90deg,var(--plan) 1px,transparent 1px);
+  .hero{position:relative;padding:28px 0 72px;overflow:hidden;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cpath d='M28 22v12M22 28h12' stroke='%23C9D2CC' stroke-width='1'/%3E%3C/svg%3E");
     background-size:56px 56px;background-position:center top}
+  .hero-strip{display:flex;justify-content:space-between;gap:20px;font-family:var(--mono);font-size:12px;color:var(--steel);padding-bottom:36px;border-bottom:1px solid var(--line);margin-bottom:40px}
+  .hero-strip span b{color:var(--ink);font-weight:500}
+  .hero-strip .blink{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ok);margin-right:7px;vertical-align:middle}
   .hero::after{content:"";position:absolute;inset:auto 0 0 0;height:160px;background:linear-gradient(transparent,var(--mist));pointer-events:none}
   .hero .wrap{position:relative;z-index:1}
   .hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:48px;align-items:center}
@@ -135,6 +138,22 @@
   .hero-meta span b{display:block;color:var(--ink);font-size:14px;font-weight:700}
 
   /* mapa de proceso */
+  .pmap-wrap{position:relative}
+  .callout{position:absolute;font-family:var(--mono);font-size:11.5px;line-height:1.45;color:var(--ink);background:var(--mist);border:1px solid var(--ink);padding:8px 10px;max-width:190px;z-index:2;opacity:0;animation:fade .6s ease 1.4s forwards}
+  .callout::before{content:"";position:absolute;width:7px;height:7px;background:var(--ink)}
+  .callout::after{content:"";position:absolute;background:var(--ink)}
+  .callout small{display:block;color:var(--steel);margin-top:3px}
+  /* cota 1: sobre el borde superior de la tarjeta */
+  .callout.c1{left:-28px;top:-96px}
+  .callout.c1::after{left:18px;bottom:-28px;width:1px;height:28px}
+  .callout.c1::before{left:15px;bottom:-33px}
+  /* cota 2: bajo el borde inferior, a la derecha */
+  .callout.c2{right:0;bottom:-98px}
+  .callout.c2::after{right:18px;top:-28px;width:1px;height:28px}
+  .callout.c2::before{right:15px;top:-33px}
+  @media (min-width:1181px){.pmap-wrap{margin:70px 0 60px}}
+  .callout .t{display:none}.pmap-wrap[data-state="before"] .callout .t.b,.pmap-wrap[data-state="after"] .callout .t.a{display:block}
+  @media (max-width:1180px){.callout{display:none}}
   .pmap{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:0 40px 80px -40px rgba(23,32,43,.45);opacity:0;transform:translateY(24px);animation:card .9s var(--ease) .35s forwards}
   @keyframes card{to{opacity:1;transform:none}}
   .pmap-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line)}
@@ -365,6 +384,7 @@
     .fmt td.m::before{content:attr(data-l) " · ";color:var(--steel)}
   }
   @media (max-width:820px){
+    .hero-strip .x{display:none}.hero-strip{padding-bottom:20px;margin-bottom:28px}
     .burger{display:block}
     .menu{position:fixed;inset:76px 0 auto 0;flex-direction:column;align-items:flex-start;gap:6px;background:var(--mist);padding:16px 28px 28px;border-bottom:1px solid var(--line);transform:translateY(-12px);opacity:0;pointer-events:none;transition:opacity .25s,transform .3s var(--ease)}
     .menu a:not(.btn){font-size:20px;padding:8px 0;color:var(--ink)}
@@ -412,6 +432,12 @@
 <main>
   <!-- HERO -->
   <div class="hero">
+    <div class="wrap">
+      <div class="hero-strip">
+        <span><span class="blink" aria-hidden="true"></span><b>Software y workflows a medida</b><span class="x"> · ingeniería de procesos aplicada</span></span>
+        <span>hora local <b id="clock">--:--</b><span class="x"> · Vigo / Eindhoven · trabajamos en remoto</span></span>
+      </div>
+    </div>
     <div class="wrap hero-grid">
       <div>
         <h1>
@@ -431,6 +457,9 @@
         </div>
       </div>
 
+      <div class="pmap-wrap" id="pmapwrap" data-state="before">
+        <div class="callout c1" aria-hidden="true"><span class="t b">7 pasos para un dato que se escribe una vez<small>3 personas lo tocan por el camino</small></span><span class="t a">1 paso: el sistema lee, valida y registra<small>la persona solo mira las excepciones</small></span></div>
+        <div class="callout c2" aria-hidden="true"><span class="t b">el error se descubre al final<small>cuando ya está en la gestoría</small></span><span class="t a">el error se descubre al entrar<small>antes de que cueste nada</small></span></div>
       <div class="pmap" id="pmap" data-state="before" aria-label="Mapa de un proceso de facturación, hoy y convertido en un workflow">
         <div class="pmap-head">
           <span class="fig"><b>fig. 01</b> Factura de proveedor, de la entrada al asiento</span>
@@ -483,6 +512,7 @@
           <div><small>intervenciones manuales</small><b data-b="7" data-a="0–1">7</b></div>
           <div><small>errores detectados</small><b data-b="al final" data-a="al entrar">al final</b></div>
         </div>
+      </div>
       </div>
     </div>
   </div>
@@ -833,6 +863,9 @@
 <script>
 (function(){
   document.getElementById('y').textContent = new Date().getFullYear();
+  const clock = document.getElementById('clock');
+  const tick = () => { const d = new Date(); clock.textContent = d.toLocaleTimeString('es-ES', {hour:'2-digit', minute:'2-digit', timeZone:'Europe/Madrid'}); };
+  tick(); setInterval(tick, 30000);
   // cabecera
   const top = document.getElementById('top');
   addEventListener('scroll', () => top.classList.toggle('scrolled', scrollY > 8), {passive:true});
@@ -846,7 +879,7 @@
   const kpis = pmap.querySelectorAll('.pmap-foot b');
   let touched = false, timer;
   function setState(s){
-    pmap.dataset.state = s;
+    pmap.dataset.state = s; document.getElementById('pmapwrap').dataset.state = s;
     btns.forEach(b => b.setAttribute('aria-pressed', b.dataset.s === s));
     kpis.forEach(k => k.textContent = s === 'after' ? k.dataset.a : k.dataset.b);
   }
