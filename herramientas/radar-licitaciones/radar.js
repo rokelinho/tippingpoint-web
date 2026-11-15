@@ -106,7 +106,7 @@
     return getJSON("index.json").then(function (ix) {
       st.indice = ix;
       var d = new Date(ix.generated);
-      var cuando = d.toDateString() === new Date().toDateString() ? "hoy a las " + d.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" }) : "el " + d.toLocaleDateString("es-ES", { day: "numeric", month: "long" });
+      var cuando = d.toDateString() === new Date().toDateString() ? "hoy" : "el " + d.toLocaleDateString("es-ES", { day: "numeric", month: "long" });
       $("#live").innerHTML = '<i></i><b>' + nf.format(ix.total) + "</b> licitaciones abiertas ahora mismo en España · actualizado " + cuando;
       $("#live").classList.add("on");
     }).catch(function () {
