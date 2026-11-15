@@ -82,6 +82,21 @@
     history.replaceState(null, "", "#" + q.toString());
   }
 
+  // ---------------------------------------------------------------- una búsqueda de demostración por dispositivo
+  // Se recuerda en el propio navegador (localStorage): no hay servidor ni se recoge la IP.
+  var LLAVE = "tp-radar-demo", CADUCA = 30 * 864e5;
+  function clave() { var q = new URLSearchParams(); if (st.sectores.length) q.set("s", st.sectores.slice().sort().join(",")); if (st.zona) q.set("z", st.zona); if (st.importe !== "any") q.set("i", st.importe); var k = norm(st.kw).split(/[,;]+/).map(function (x) { return x.trim(); }).filter(Boolean).join(","); if (k) q.set("q", k); return q.toString(); }
+  function usada() { try { var v = JSON.parse(localStorage.getItem(LLAVE) || "null"); return v && v.q && Date.now() - v.t < CADUCA ? v : null; } catch (e) { return null; } }
+  function gastar(hash) { try { localStorage.setItem(LLAVE, JSON.stringify({ q: clave(), h: hash, t: Date.now() })); } catch (e) {} }
+  function bloqueo() {
+    var box = $("#resultados"); box.classList.add("show");
+    box.innerHTML = '<div class="wrap"><div class="lock"><p class="kicker">Demo</p><h2>Ya has usado tu búsqueda de demostración.</h2><p>La demo enseña una búsqueda por dispositivo. Si quieres vigilar más sectores, otras zonas o que te lleguen solas cada semana, eso es justo lo que hace el Radar: pídenos una prueba y lo montamos con el perfil de tu empresa.</p><div class="lock-b"><a class="btn btn-signal" href="/#contacto">Pedir una prueba del Radar</a><button type="button" class="btn btn-ghost-inv" id="volver">Volver a mis resultados</button></div></div></div>';
+    $("#volver").onclick = restaurar;
+    box.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  function restaurar() { var u = usada(); if (!u) return; st.sectores = []; st.zona = ""; st.importe = "any"; st.kw = ""; history.replaceState(null, "", "#" + u.h); leerHash(); reflejar(); buscar(); }
+  function marcarUsada() { var f = $("#form"); f.classList.add("usada"); $("#nota").innerHTML = "Ya has usado tu búsqueda de demostración: estos son tus resultados. Para más sectores o zonas, <a href=\"/#contacto\">pide una prueba del Radar</a>."; }
+
   // ---------------------------------------------------------------- datos
   function getJSON(path) {
     if (!cache[path]) cache[path] = fetch(DATA + path, { cache: "no-cache" }).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); });
@@ -131,10 +146,13 @@
     var rango = IMPORTES.filter(function (x) { return x.id === st.importe; })[0];
     if (!prefijos.length && !kws.length) { $("#aviso").textContent = "Elige al menos un sector o escribe una palabra clave."; return; }
     $("#aviso").textContent = "";
+    var u = usada(); if (u && u.q !== clave()) { bloqueo(); return; }
     var divs = prefijos.length ? prefijos.map(function (p) { return p.slice(0, 2); }) : Object.keys(st.indice ? st.indice.byDiv : {});
     divs = divs.filter(function (d, i, a) { return a.indexOf(d) === i && (!st.indice || st.indice.byDiv[d]); });
     var btn = $("#buscar"); btn.disabled = true; btn.textContent = "Buscando…";
     escribirHash();
+    if (!u) gastar(location.hash.replace(/^#/, ""));
+    marcarUsada();
     Promise.all(divs.map(function (d) { return getJSON("d/" + d + ".json").catch(function () { return { items: [] }; }); })).then(function (files) {
       var vistos = {}, out = [];
       files.forEach(function (f) { f.items.forEach(function (it) { if (vistos[it[0]] || it[7] < isoHoy()) return; vistos[it[0]] = 1; var r = puntuar(it, prefijos, kws, rango); if (r) out.push(r); }); });
@@ -227,9 +245,6 @@
     $("#importe").onchange = function () { st.importe = this.value; };
     $("#kw").oninput = function () { st.kw = this.value; };
     $("#form").addEventListener("submit", function (e) { e.preventDefault(); buscar(); });
-    document.querySelectorAll("[data-ejemplo]").forEach(function (a) {
-      a.addEventListener("click", function (e) { e.preventDefault(); location.hash = a.dataset.ejemplo; st.sectores = []; st.zona = ""; st.importe = "any"; st.kw = ""; leerHash(); reflejar(); buscar(); });
-    });
   }
   function reflejar() {
     document.querySelectorAll("#sectores .chip").forEach(function (b) { var on = st.sectores.indexOf(b.dataset.id) !== -1; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on ? "true" : "false"); });
@@ -238,6 +253,10 @@
 
   montar();
   var auto = leerHash(); reflejar();
-  cargarIndice().then(function () { if (auto) buscar(); });
+  var previa = usada();
+  cargarIndice().then(function () {
+    if (auto) buscar();                       // enlace compartido: cuenta como su búsqueda (o bloquea si ya gastó otra)
+    else if (previa) restaurar();             // vuelve a la página: le enseñamos la suya
+  });
   var y = $("#y"); if (y) y.textContent = new Date().getFullYear();
 })();

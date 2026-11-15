@@ -64,7 +64,11 @@
   .perfil select:focus,.perfil input:focus{border-color:var(--ink);outline:0}
   .perfil .btn{width:100%;margin-top:22px}
   .aviso{color:var(--bad);font-size:15px;font-weight:500;min-height:1.4em;margin-top:8px}
-  .ejemplos{font-size:15px;color:var(--slate);margin-top:6px}.ejemplos a{color:var(--deep);font-weight:700;text-decoration:none;border-bottom:1.5px solid var(--signal)}
+  .ejemplos{font-size:15px;color:var(--slate);margin-top:6px}.ejemplos b{color:var(--ink)}.ejemplos a{color:var(--deep);font-weight:700;text-decoration:none;border-bottom:1.5px solid var(--signal)}
+  .perfil.usada .chip:not(.on){opacity:.45}
+  .lock{background:var(--ink);color:var(--mist);border-radius:22px;padding:44px 40px;margin-top:48px}.lock .kicker{color:var(--signal)}
+  .lock h2{font-size:clamp(28px,3.4vw,44px);line-height:1.05;letter-spacing:-.03em;font-weight:900;margin-top:14px;max-width:20ch}.lock p:not(.kicker){color:var(--fog);max-width:60ch;margin-top:16px}
+  .lock-b{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.btn-ghost-inv{border-color:var(--fog);color:var(--mist);background:transparent}.btn-ghost-inv:hover{background:var(--mist);color:var(--ink)}
   /* resultados */
   #resultados{display:none;padding:0 0 100px}#resultados.show{display:block}
   .rep-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;padding-top:48px;border-top:2px solid var(--ink)}
@@ -126,7 +130,7 @@
   footer{background:var(--ink);color:#8C96A0;font-size:15px;padding:40px 0;border-top:1px solid #2A3542}
   .legal{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}.legal a{text-decoration:none}.legal a:hover{color:var(--signal)}
   @media (max-width:900px){.hero-grid{grid-template-columns:1fr;gap:0}.hero-grid>div:first-child{display:contents}.perfil{order:2;margin-top:30px}.trust{order:3;margin-top:30px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.steps,.vs-grid{grid-template-columns:1fr}.menu a:not(.btn){display:none}.menu .btn{padding:9px 14px;font-size:14px}.pitch{grid-template-columns:1fr}}
-  @media (max-width:640px){.lic{grid-template-columns:58px minmax(0,1fr);gap:14px;padding:16px;align-items:start}.score{width:58px;height:58px}.score b{font-size:21px}.score small{font-size:9px}.lic h3{font-size:17px}.ver{grid-column:1/-1;text-align:center}.row2{grid-template-columns:1fr}.perfil{padding:22px 18px}.tools{justify-content:flex-start}.lic .org{white-space:normal}}
+  @media (max-width:640px){.lock{padding:30px 22px}.lic{grid-template-columns:58px minmax(0,1fr);gap:14px;padding:16px;align-items:start}.score{width:58px;height:58px}.score b{font-size:21px}.score small{font-size:9px}.lic h3{font-size:17px}.ver{grid-column:1/-1;text-align:center}.row2{grid-template-columns:1fr}.perfil{padding:22px 18px}.tools{justify-content:flex-start}.lic .org{white-space:normal}}
   @media (max-width:480px){.cards{gap:10px}.card{padding:14px 15px}.card .v{font-size:23px}.card .k{font-size:11.5px}.card.dark{grid-column:1/-1}}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 </style>
@@ -160,7 +164,7 @@
         <p class="live" id="live" aria-live="polite">Cargando las licitaciones de hoy…</p>
         <ul class="trust">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9"/><path d="M12 7v5l3 2"/><path d="M3 4v5h5"/></svg><span><b>Datos reales, actualizados cada día.</b> Salen de la Plataforma de Contratación del Sector Público: Estado, comunidades, ayuntamientos y empresas públicas.</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span><b>Sin registro.</b> Lo que eliges se queda en tu navegador: no te pedimos el correo para ver los resultados.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span><b>Sin registro.</b> Una búsqueda de demostración por dispositivo, sin pedirte el correo. Lo que eliges se queda en tu navegador.</span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h12M12 6l6 6-6 6"/></svg><span><b>Enlace directo al expediente.</b> Cada resultado te lleva al anuncio oficial con los pliegos.</span></li>
         </ul>
       </div>
@@ -177,7 +181,7 @@
         <div style="margin-top:20px"><label class="lab" for="kw">Palabras clave <small>· opcional, separadas por comas</small></label><input type="text" id="kw" placeholder="p. ej. depuradora, carril bici, auditoría" autocomplete="off" maxlength="80"></div>
         <button class="btn btn-main" id="buscar" type="submit">Ver licitaciones abiertas</button>
         <p class="aviso" id="aviso" role="alert"></p>
-        <p class="ejemplos">O prueba un ejemplo: <a href="#" data-ejemplo="s=ingenieria,obra-civil&amp;z=ES11">ingeniería en Galicia</a> · <a href="#" data-ejemplo="s=informatica&amp;i=m">software, 50–250 mil €</a> · <a href="#" data-ejemplo="s=limpieza&amp;z=ES30">limpieza en Madrid</a></p>
+        <p class="ejemplos" id="nota">Tienes <b>una búsqueda de demostración</b> por dispositivo: elige bien tu sector y tu zona.</p>
       </form>
     </div>
   </div>
@@ -191,9 +195,9 @@
     <h2>Esto es un escaparate. El Radar es quien vigila por ti.</h2>
     <div class="vs-grid">
       <div class="vs-col">
-        <h3>Esta demo</h3><p class="sub">Gratis, para siempre</p>
+        <h3>Esta demo</h3><p class="sub">Gratis · una búsqueda por dispositivo</p>
         <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#5B6673" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14"/></svg><span>Tienes que acordarte de entrar<small>y repetir la búsqueda cada vez.</small></span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#5B6673" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14"/></svg><span>Una sola búsqueda, una foto de hoy<small>mañana habrá licitaciones nuevas y no te enterarás.</small></span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="#5B6673" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14"/></svg><span>Filtra por sector, zona e importe<small>con reglas sencillas sobre el título y el código CPV.</small></span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="#5B6673" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14"/></svg><span>Te da el título y el enlace<small>leer el pliego para saber si de verdad os sirve es cosa tuya.</small></span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="#5B6673" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14"/></svg><span>Solo licitaciones españolas</span></li>
@@ -233,7 +237,8 @@
       <details><summary>¿De dónde salen los datos?</summary><div class="answer">De los datos abiertos de la Plataforma de Contratación del Sector Público (Ministerio de Hacienda), que reúne las licitaciones del Estado y de la mayoría de comunidades autónomas, ayuntamientos y entidades públicas. Los descargamos una vez al día, así que una licitación publicada hoy puede tardar hasta mañana en aparecer aquí.</div></details>
       <details><summary>¿Están todas las licitaciones de España?</summary><div class="answer">Casi todas, pero no todas. No incluimos los contratos menores, y algún organismo publica solo en su propia plataforma. Para decidir si presentarte, mira siempre el expediente oficial: es el enlace de cada resultado.</div></details>
       <details><summary>¿Qué significa el número de encaje?</summary><div class="answer">Es una estimación hecha con reglas, no con inteligencia artificial: mira el código CPV, tus palabras clave en el título, la zona, el importe y el plazo que queda. Sirve para ordenar, no para decidir. El Radar de verdad lee el anuncio completo contra el perfil de tu empresa, y por eso acierta bastante más.</div></details>
-      <details><summary>¿Guardáis lo que busco?</summary><div class="answer">No. La búsqueda se hace en tu navegador y no nos llega. Lo único que queda es la propia dirección de la página, que incluye tus filtros para que puedas guardarla o enviársela a un compañero.</div></details>
+      <details><summary>¿Por qué solo una búsqueda?</summary><div class="answer">Porque es una demostración, no un buscador. Con una búsqueda ves qué hay abierto hoy para tu empresa y cómo trabaja el Radar. Si quieres seguir varios sectores o zonas, o que te avisemos cuando salga algo nuevo, pídenos una prueba: es gratis y se monta con el perfil de tu empresa.</div></details>
+      <details><summary>¿Guardáis lo que busco?</summary><div class="answer">No. La búsqueda se hace en tu navegador y no nos llega: no recogemos tu IP ni tu correo. Tu navegador recuerda durante 30 días que ya has usado la demo y con qué filtros, para enseñarte tus resultados cuando vuelvas. La dirección de la página incluye esos filtros, así que puedes guardarla o enviársela a un compañero.</div></details>
       <details><summary>¿Cuánto cuesta el Radar?</summary><div class="answer">Depende de si se monta para una empresa o para una asociación con varios socios. Escríbenos con dos líneas sobre vuestra actividad y te decimos si os encaja y cuánto sería, sin compromiso.</div></details>
     </div>
   </div>
