@@ -45,13 +45,16 @@
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
   var norm = function (s) { return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); };
-  var nf = new Intl.NumberFormat("es-ES", { maximumFractionDigits: 0 });
+  var nf = new Intl.NumberFormat("es-ES", { maximumFractionDigits: 0, useGrouping: "always" });
   var eur = function (n) { return n == null ? "Importe no publicado" : nf.format(n) + " €"; };
   var eurCorto = function (n) { return n >= 1e9 ? nf.format(Math.round(n / 1e8) / 10) + " mil M€" : n >= 1e6 ? (Math.round(n / 1e5) / 10).toLocaleString("es-ES") + " M€" : n >= 1e3 ? nf.format(Math.round(n / 1e3)) + " mil €" : nf.format(n) + " €"; };
   var hoy = function () { var d = new Date(); return new Date(d.getFullYear(), d.getMonth(), d.getDate()); };
   var dias = function (iso) { var p = iso.split("-"); return Math.round((new Date(+p[0], +p[1] - 1, +p[2]) - hoy()) / 864e5); };
   var fechaLarga = function (iso) { var p = iso.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]).toLocaleDateString("es-ES", { day: "numeric", month: "long" }); };
-  var zona = function (nuts) { if (!nuts || nuts === "ES") return "España"; return PROV[nuts] || CCAA[nuts.slice(0, 4)] || "España"; };
+  var NUTS1 = { ES1: "Noroeste", ES2: "Noreste", ES3: "Madrid", ES4: "Centro", ES5: "Este", ES6: "Sur", ES7: "Canarias" };
+  var zona = function (nuts) { if (!nuts || nuts === "ES" || nuts === "ESZZ" || nuts === "ESZ") return "España"; if (nuts.slice(0, 2) !== "ES") return "Fuera de España"; return PROV[nuts] || CCAA[nuts.slice(0, 4)] || NUTS1[nuts.slice(0, 3)] || "España"; };
+  // ¿la licitación cae en la comunidad elegida? Vale también si solo indica el país o la gran región que la contiene
+  var enZona = function (nuts, z) { if (!nuts || nuts === "ES" || nuts === "ESZZ" || nuts === "ESZ") return true; return nuts.indexOf(z) === 0 || z.indexOf(nuts) === 0; };
   var titulo = function (t) { // muchos órganos publican en MAYÚSCULAS: se pasa a frase para que se lea
     if (t.length > 12 && t === t.toUpperCase()) t = t.charAt(0) + t.slice(1).toLowerCase();
     return t;
@@ -105,7 +108,7 @@
     for (var k = 0; k < kws.length; k++) if (t.indexOf(kws[k]) !== -1) kwHits.push(kws[k]);
     if (prefijos.length && !mejor && !kwHits.length) return null;
     if (!prefijos.length && kws.length && !kwHits.length) return null;
-    if (st.zona && it[3] && it[3] !== "ES" && it[3].slice(0, 4) !== st.zona) return null;
+    if (st.zona && !enZona(it[3], st.zona)) return null;
     var imp = it[6];
     if (rango.id !== "any" && imp != null && (imp < rango.min || imp > rango.max)) return null;
 
@@ -113,10 +116,10 @@
     if (mejor) { s += 14 + Math.min(12, (mejor - 2) * 4); por.push("actividad (CPV " + cpvHit.slice(0, 5) + ")"); }
     if (kwHits.length) { s += Math.min(26, kwHits.length * 16); por.push("«" + kwHits.join("», «") + "» en el título"); }
     else if (kws.length) s -= 8;
-    if (st.zona && it[3] && it[3].slice(0, 4) === st.zona) { s += 10; por.push("tu zona"); }
+    if (st.zona && it[3] && it[3].indexOf(st.zona) === 0) { s += 10; por.push("tu zona"); }
     if (rango.id !== "any" && imp != null) { s += 8; por.push("importe en tu rango"); }
     var d = dias(it[7]);
-    if (d >= 10) s += 6; else if (d <= 3) s -= 10;
+    if (d >= 10 && d <= 365) s += 6; else if (d <= 3) s -= 10;
     if (imp == null) s -= 4;
     return { it: it, s: Math.max(5, Math.min(99, s)), por: por, d: d };
   }
@@ -151,12 +154,13 @@
   function tarjeta(r) {
     var it = r.it, url = it[9] ? (it[9].charAt(0) === "~" ? DEEPLINK + it[9].slice(1) : it[9]) : "";
     var cls = r.s >= 80 ? "hi" : r.s >= 62 ? "mid" : "";
-    var plazo = r.d === 0 ? "cierra hoy" : r.d === 1 ? "cierra mañana" : "cierra en " + r.d + " días";
+    var abiertaSiempre = r.d > 365; // sistemas dinámicos y acuerdos con plazo de años
+    var plazo = abiertaSiempre ? "admisión abierta hasta " + it[7].slice(0, 4) : (r.d === 0 ? "cierra hoy" : r.d === 1 ? "cierra mañana" : "cierra en " + r.d + " días") + " · " + fechaLarga(it[7]);
     return '<article class="lic">' +
       '<div class="score ' + cls + '" title="Encaje estimado con tu selección"><b>' + r.s + "</b><small>encaje</small></div>" +
       '<div class="lic-b"><h3>' + esc(titulo(it[1])) + "</h3>" +
       '<p class="org">' + esc(it[2] || "Órgano no indicado") + "</p>" +
-      '<p class="meta"><span class="m imp">' + eur(it[6]) + '</span><span class="m' + (r.d <= 5 ? " urg" : "") + '">' + plazo + " · " + fechaLarga(it[7]) + '</span><span class="m">' + esc(zona(it[3])) + "</span>" + (TIPO[it[4]] ? '<span class="m">' + TIPO[it[4]] + "</span>" : "") + "</p>" +
+      '<p class="meta"><span class="m imp">' + eur(it[6]) + '</span><span class="m' + (r.d <= 5 ? " urg" : "") + '">' + plazo + '</span><span class="m">' + esc(zona(it[3])) + "</span>" + (TIPO[it[4]] ? '<span class="m">' + TIPO[it[4]] + "</span>" : "") + "</p>" +
       (r.por.length ? '<p class="por">Encaja por: ' + esc(r.por.join(" · ")) + "</p>" : "") +
       "</div>" +
       (url ? '<a class="ver" href="' + esc(url) + '" target="_blank" rel="noopener nofollow">Ver expediente<span aria-hidden="true"> ↗</span></a>' : "") +
