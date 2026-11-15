@@ -1,0 +1,62 @@
+# Datos de la demo pública del Radar (/herramientas/radar-licitaciones/).
+# Cada día descarga de la Plataforma de Contratación (PLACSP) las licitaciones abiertas y las deja,
+# en JSON compacto, en la rama huérfana `radar-data` (un único commit que se sobrescribe: sin
+# historial que engorde el repo). La web las lee desde raw.githubusercontent.com.
+name: radar-demo-data
+
+on:
+  schedule:
+    - cron: "40 5 * * *" # todos los días, 06:40/07:40 hora peninsular
+  workflow_dispatch: {}
+  push:
+    branches: [radar-demo]
+    paths:
+      - ".github/scripts/radar-demo-data.mjs"
+      - ".github/workflows/radar-demo-data.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: radar-demo-data
+  cancel-in-progress: false
+
+jobs:
+  datos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+
+      - name: Recuperar el almacén anterior (rama radar-data)
+        run: |
+          if git ls-remote --exit-code --heads origin radar-data >/dev/null 2>&1; then
+            git clone --depth 1 --branch radar-data "https://github.com/${GITHUB_REPOSITORY}.git" _data
+            rm -rf _data/.git
+          else
+            mkdir -p _data
+          fi
+
+      - name: Descargar licitaciones abiertas (PLACSP)
+        run: node .github/scripts/radar-demo-data.mjs --out=_data --dias=30
+
+      - name: Publicar en la rama radar-data
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd _data
+          cat > README.md <<'TXT'
+          Datos de la demo del Radar de licitaciones (tippingpoint.es/herramientas/radar-licitaciones/).
+          Se regeneran solos cada día; no editar a mano. Fuente: Plataforma de Contratación del Sector Público.
+          TXT
+          git init -q -b radar-data
+          git config user.name "radar-demo-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Licitaciones abiertas · $(date -u +%F)"
+          git push -q --force "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" radar-data
+          du -sh . && ls d | wc -l
