@@ -56,7 +56,7 @@
     --ok:#2F7D5B;
     --max:1200px;
     --ease:cubic-bezier(.2,.7,.2,1);
-    --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --mono:var(--sans);
     --sans:"Schibsted Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -443,6 +443,15 @@
     *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
     .hero h1 .l > span,.hero .intro,.actions,.hero-meta,.pmap{opacity:1;transform:none}
   }
+  .kicker::before{display:none}
+  .hero{padding-top:72px}
+  @media (max-width:640px){.hero{padding-top:36px}.pmap-wrap{display:none}}
+  a.radar{text-decoration:none;color:inherit;transition:border-color .2s}a.radar:hover{border-color:var(--signal)}
+  .pasos{list-style:none;counter-reset:p;margin-top:56px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px;border-top:2px solid var(--ink);padding-top:28px}
+  .pasos li{counter-increment:p;color:var(--steel);font-size:17px;line-height:1.55}
+  .pasos li::before{content:counter(p) ".";display:block;font-weight:900;font-size:22px;color:var(--ink);margin-bottom:6px}
+  .pasos b{color:var(--ink);display:block;margin-bottom:4px}
+  @media (max-width:800px){.pasos{grid-template-columns:1fr;gap:22px}}
 </style>
 </head>
 <body>
@@ -454,10 +463,9 @@
     </a>
     <button class="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
     <nav class="menu" id="menu" aria-label="Principal">
-      <a href="#servicios">Qué hacemos</a>
-      <a href="#metodo">Cómo trabajamos</a>
       <a href="#productos">Productos</a>
       <a href="#casos">Casos</a>
+      <a href="#servicios">Qué hacemos</a>
       <a href="/herramientas/">Herramientas</a>
       <a href="#faq">Preguntas</a>
       <a class="btn btn-main" href="#contacto">Diagnóstico gratis</a>
@@ -469,27 +477,18 @@
   <!-- HERO -->
   <div class="hero">
     <div class="wrap">
-      <div class="hero-strip">
-        <span><span class="blink" aria-hidden="true"></span><b>Software y workflows a medida</b><span class="x"> · ingeniería de procesos aplicada</span></span>
-        <span>hora local <b id="clock">--:--</b><span class="x"> · en remoto y en persona</span></span>
-      </div>
     </div>
     <div class="wrap hero-grid">
       <div>
         <h1>
-          <span class="l"><span>Construimos</span></span>
-          <span class="l"><span>el software que</span></span>
-          <span class="l"><span>le falta a tu empresa.</span></span>
+          <span class="l"><span>Software para</span></span>
+          <span class="l"><span>el trabajo que</span></span>
+          <span class="l"><span>se repite.</span></span>
         </h1>
-        <p class="intro">Encontramos dónde se va el tiempo y construimos lo que lo resuelve: <b>un workflow, un panel de datos, un asistente de IA o una app a medida.</b> En semanas, con precio cerrado.</p>
+        <p class="intro">Facturas que alguien teclea a mano, licitaciones que nadie tiene tiempo de leer, datos repartidos en cinco Excel. Miramos cómo se hace hoy y construimos la herramienta que lo hace sola.</p>
         <div class="actions">
           <a class="btn btn-main" href="#contacto">Pide un diagnóstico gratuito</a>
-          <a class="btn btn-ghost" href="#servicios">Qué hacemos</a>
-        </div>
-        <div class="hero-meta">
-          <span><b>30 min</b>primera llamada</span>
-          <span><b>2–8 semanas</b>de propuesta a producción</span>
-          <span><b>Toda España</b>en remoto y en persona</span>
+          <a class="btn btn-ghost" href="/herramientas/radar-licitaciones/">Ver licitaciones abiertas hoy</a>
         </div>
       </div>
 
@@ -553,12 +552,85 @@
     </div>
   </div>
 
+
+
+
+
+
+
+  <!-- PRODUCTOS -->
+  <section class="dark" id="productos">
+    <div class="wrap">
+      <h2>Tres herramientas que ya están funcionando.</h2>
+
+      <div class="prod-grid">
+        <article class="prod main" id="radar">
+          <h3>Radar de licitaciones</h3>
+          <p>Vigila la contratación pública y te manda solo lo que encaja con tu empresa, puntuado y resumido.</p>
+          <a class="radar" id="radarlive" href="/herramientas/radar-licitaciones/" aria-label="Licitaciones abiertas hoy">
+            <header><b>Abiertas hoy · ingeniería y arquitectura</b><span id="rl-n"></span></header>
+            <div id="rl-list"><div class="tender"><h4>Cargando las licitaciones de hoy…</h4><small>Plataforma de Contratación del Sector Público</small></div></div>
+            <footer class="rfoot" id="rl-foot">Datos reales, actualizados cada día · pulsa para buscar las de tu sector</footer>
+          </a>
+          <span class="who"><b>Para</b> ingenierías, constructoras y consultoras · <a href="/herramientas/radar-licitaciones/" style="color:var(--signal)">ver licitaciones abiertas hoy</a> · <a href="#contacto" style="color:var(--signal)">pedir una prueba</a></span>
+        </article>
+
+        <a class="prod" href="/herramientas/auditor-gastos/">
+          <span class="st">Gratis, en tu navegador</span>
+          <h3>Auditor de gastos</h3>
+          <div class="mini">
+            <svg viewBox="0 0 260 70" aria-hidden="true">
+              <g class="mb"><rect x="6" y="40" width="22" height="24"/><rect x="34" y="30" width="22" height="34"/><rect x="62" y="36" width="22" height="28"/><rect x="90" y="18" width="22" height="46"/><rect x="118" y="26" width="22" height="38"/><rect x="146" y="22" width="22" height="42"/><rect x="174" y="12" width="22" height="52" class="hi"/><rect x="202" y="28" width="22" height="36"/><rect x="230" y="24" width="22" height="40"/></g>
+              <text x="185" y="8" text-anchor="middle" style="font:700 8px var(--mono);fill:#F2C230">↑ Netflix +14 %</text>
+            </svg>
+          </div>
+          <p>Arrastra tu extracto y ves suscripciones, subidas de precio y en qué se va el dinero.</p>
+          <span class="who"><b>Para</b> cualquiera · probarlo ahora</span>
+        </a>
+
+        <article class="prod">
+          <span class="st">En uso en farmacias</span>
+          <h3>Lector de facturas</h3>
+          <div class="mini">
+            <svg viewBox="0 0 260 70" aria-hidden="true">
+              <rect x="8" y="8" width="40" height="54" rx="4" fill="none" stroke="#AEB7C0" stroke-width="1.5"/><path d="M16 22h24M16 32h24M16 42h16" stroke="#AEB7C0" stroke-width="1.5"/>
+              <path d="M56 35h40" stroke="#F2C230" stroke-width="1.5" stroke-dasharray="3 4"/>
+              <rect x="100" y="16" width="70" height="38" rx="6" fill="#17202B" stroke="#2E3A48"/><text x="135" y="33" text-anchor="middle" style="font:500 8px var(--mono);fill:#F2F4F1">importe · IVA</text><text x="135" y="45" text-anchor="middle" style="font:500 8px var(--mono);fill:#AEB7C0">proveedor · albarán</text>
+              <path d="M178 35h40" stroke="#F2C230" stroke-width="1.5" stroke-dasharray="3 4"/>
+              <circle cx="236" cy="35" r="14" fill="#2F7D5B"/><path d="M229 35l5 5 9-10" stroke="#F2F4F1" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <p>Del correo a contabilidad sin teclear nada; avisa solo si algo no cuadra.</p>
+          <span class="who"><b>Para</b> farmacias, comercios y talleres · <a href="#contacto" style="color:var(--signal)">adaptarlo</a></span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASOS -->
+  <section id="casos">
+    <div class="wrap">
+      <h2>Dos trabajos recientes.</h2>
+      <div class="cases-grid">
+        <article class="case">
+          <span class="sec">Farmacia · workflow de facturas</span>
+          <h3>Las facturas dejan de teclearse.</h3>
+          <div class="kpis"><div><small>antes</small><b>≈ 9 min / factura</b></div><div><small>ahora</small><b>≈ 20 s</b></div><div><small>persona</small><b>solo excepciones</b></div></div>
+        </article>
+        <article class="case">
+          <span class="sec">Nutrición y salud · SEO y GEO</span>
+          <h3>Dieta Coherente, visible en Google y en la IA.</h3>
+          <div class="kpis"><div><small>trabajo</small><b>auditoría + contenidos</b></div><div><small>medimos</small><b>Google y asistentes</b></div><div><small>ritmo</small><b>informe mensual</b></div></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <!-- QUÉ HACEMOS -->
   <section id="servicios">
     <div class="wrap">
-      <p class="kicker">Qué hacemos</p>
-      <h2>Cuatro tipos de herramienta.</h2>
-      <p class="lede">Primero entendemos el proceso; después construimos la más pequeña que lo resuelve.</p>
+      <h2>Lo que nos suelen encargar.</h2>
+      <p class="lede">Casi siempre empieza igual: una tarea que alguien repite cada semana y que nadie ha tenido tiempo de arreglar.</p>
 
       <div class="tiles">
         <a class="tile" href="#contacto" id="s-auto">
@@ -639,170 +711,15 @@
           <span class="meta">mensual</span>
         </a>
       </div>
+      <ol class="pasos" id="metodo">
+        <li><b>Una llamada de 30 minutos, gratis.</b> Nos cuentas qué os quita tiempo y te decimos si tiene arreglo y cuál.</li>
+        <li><b>Una propuesta con precio cerrado.</b> Qué se construye, cuánto cuesta y cuándo está. Decides tú.</li>
+        <li><b>De dos a ocho semanas de trabajo.</b> Con algo que ya se puede usar cada dos semanas. Lo construido es vuestro.</li>
+      </ol>
       <div class="sheet-note">
-        <p>¿No sabes cuál te hace falta? Para eso es la llamada de diagnóstico.</p>
+        <p>¿No sabes qué te hace falta? Para eso es la llamada.</p>
         <a class="btn btn-main" href="#contacto">Pedir diagnóstico</a>
       </div>
-    </div>
-  </section>
-
-  <!-- MÉTODO -->
-  <section class="metodo" id="metodo">
-    <div class="wrap">
-      <p class="kicker">Cómo trabajamos</p>
-      <h2>Empezamos pequeño. Escalamos lo que funciona.</h2>
-
-      <div class="gantt" role="table" aria-label="Cronograma de un proyecto típico">
-        <div class="g-head" role="row"><div>fase</div><div>sem 1</div><div>sem 2</div><div>sem 3</div><div>sem 4</div><div>sem 5</div><div>sem 6</div><div>sem 7</div><div>sem 8</div></div>
-        <div class="g-row" role="row">
-          <div class="g-lab"><h3>Diagnóstico</h3><p>Llamada de 30 minutos.</p><small>gratis</small></div>
-          <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-          <span class="bar free" data-c="1" data-w="1">30 min</span>
-        </div>
-        <div class="g-row" role="row">
-          <div class="g-lab"><h3>Mapa y propuesta</h3><p>Proceso dibujado, tiempos medidos, precio cerrado.</p><small>tú decides</small></div>
-          <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-          <span class="bar" data-c="1" data-w="2">propuesta cerrada</span>
-          <span class="g-mark" style="left:calc(260px + (100% - 260px) * 2/8)"><span>decisión</span></span>
-        </div>
-        <div class="g-row" role="row">
-          <div class="g-lab"><h3>Construcción</h3><p>Entregas usables cada dos semanas.</p></div>
-          <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-          <span class="bar" data-c="3" data-w="4">entrega 1 · entrega 2</span>
-        </div>
-        <div class="g-row" role="row">
-          <div class="g-lab"><h3>Puesta en marcha</h3><p>Integración y formación del equipo.</p></div>
-          <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-          <span class="bar" data-c="7" data-w="2">en producción</span>
-        </div>
-        <div class="g-row" role="row">
-          <div class="g-lab"><h3>Mejora continua</h3><p>Opcional, mes a mes.</p><small>sin permanencia</small></div>
-          <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-          <span class="bar ghost" data-c="7" data-w="2">si quieres</span>
-        </div>
-      </div>
-      <div class="g-legend"><span><i class="free"></i>gratis</span><span><i></i>incluido</span><span><i class="ghost"></i>opcional</span></div>
-
-      <div class="gantt-m">
-        <div class="gm"><small>semana 1</small><div><h3>Diagnóstico</h3><p>Llamada gratuita de 30 minutos.</p></div></div>
-        <div class="gm"><small>semanas 1–2</small><div><h3>Mapa y propuesta</h3><p>Proceso dibujado, tiempos medidos, precio cerrado.</p></div></div>
-        <div class="gm"><small>semanas 3–6</small><div><h3>Construcción</h3><p>Entregas usables cada dos semanas.</p></div></div>
-        <div class="gm"><small>semanas 7–8</small><div><h3>Puesta en marcha</h3><p>Integración y formación.</p></div></div>
-        <div class="gm"><small>después</small><div><h3>Mejora continua</h3><p>Opcional, sin permanencia.</p></div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRODUCTOS -->
-  <section class="dark" id="productos">
-    <div class="wrap">
-      <p class="kicker">Productos</p>
-      <h2>Lo que construimos para otros, también para nosotros.</h2>
-
-      <div class="prod-grid">
-        <article class="prod main" id="radar">
-          <span class="st"><i></i>en producción</span>
-          <h3>Radar de licitaciones</h3>
-          <p>Vigila la contratación pública y te manda solo lo que encaja con tu empresa, puntuado y resumido.</p>
-          <div class="radar" aria-label="Ejemplo de aviso del radar">
-            <header><b>Radar · aviso diario</b><span>3 nuevas · encaje &gt; 70 %</span></header>
-            <div class="tender"><h4>Redacción de proyecto de reforma de nave industrial</h4><small>Galicia · 180.000 € · cierra en 12 días</small><span class="match">94</span></div>
-            <div class="tender"><h4>Dirección facultativa de obras de urbanización</h4><small>Asturias · 96.000 € · cierra en 20 días</small><span class="match">88</span></div>
-            <div class="tender"><h4>Asistencia técnica en eficiencia energética municipal</h4><small>Castilla y León · 64.000 € · cierra en 9 días</small><span class="match mid">71</span></div>
-            <div class="tender"><h4>Coordinación de seguridad y salud en obra de edificación</h4><small>Cantabria · 42.000 € · cierra en 16 días</small><span class="match mid">70</span></div>
-            <footer class="rfoot">descartadas hoy: 212 · no encajan con tu solvencia o zona</footer>
-          </div>
-          <span class="who"><b>Para</b> ingenierías, constructoras y consultoras · <a href="/herramientas/radar-licitaciones/" style="color:var(--signal)">ver licitaciones abiertas hoy</a> · <a href="#contacto" style="color:var(--signal)">pedir una prueba</a></span>
-        </article>
-
-        <a class="prod" href="/herramientas/auditor-gastos/">
-          <span class="st"><i></i>gratis · en tu navegador</span>
-          <h3>Auditor de gastos</h3>
-          <div class="mini">
-            <svg viewBox="0 0 260 70" aria-hidden="true">
-              <g class="mb"><rect x="6" y="40" width="22" height="24"/><rect x="34" y="30" width="22" height="34"/><rect x="62" y="36" width="22" height="28"/><rect x="90" y="18" width="22" height="46"/><rect x="118" y="26" width="22" height="38"/><rect x="146" y="22" width="22" height="42"/><rect x="174" y="12" width="22" height="52" class="hi"/><rect x="202" y="28" width="22" height="36"/><rect x="230" y="24" width="22" height="40"/></g>
-              <text x="185" y="8" text-anchor="middle" style="font:700 8px var(--mono);fill:#F2C230">↑ Netflix +14 %</text>
-            </svg>
-          </div>
-          <p>Arrastra tu extracto y ves suscripciones, subidas de precio y en qué se va el dinero.</p>
-          <span class="who"><b>Para</b> cualquiera · probar ahora</span>
-        </a>
-
-        <article class="prod">
-          <span class="st"><i></i>en producción</span>
-          <h3>Lector de facturas</h3>
-          <div class="mini">
-            <svg viewBox="0 0 260 70" aria-hidden="true">
-              <rect x="8" y="8" width="40" height="54" rx="4" fill="none" stroke="#AEB7C0" stroke-width="1.5"/><path d="M16 22h24M16 32h24M16 42h16" stroke="#AEB7C0" stroke-width="1.5"/>
-              <path d="M56 35h40" stroke="#F2C230" stroke-width="1.5" stroke-dasharray="3 4"/>
-              <rect x="100" y="16" width="70" height="38" rx="6" fill="#17202B" stroke="#2E3A48"/><text x="135" y="33" text-anchor="middle" style="font:500 8px var(--mono);fill:#F2F4F1">importe · IVA</text><text x="135" y="45" text-anchor="middle" style="font:500 8px var(--mono);fill:#AEB7C0">proveedor · albarán</text>
-              <path d="M178 35h40" stroke="#F2C230" stroke-width="1.5" stroke-dasharray="3 4"/>
-              <circle cx="236" cy="35" r="14" fill="#2F7D5B"/><path d="M229 35l5 5 9-10" stroke="#F2F4F1" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <p>Del correo a contabilidad sin teclear nada; avisa solo si algo no cuadra.</p>
-          <span class="who"><b>Para</b> farmacias, comercios y talleres · <a href="#contacto" style="color:var(--signal)">adaptarlo</a></span>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- CASOS -->
-  <section id="casos">
-    <div class="wrap">
-      <p class="kicker">Casos</p>
-      <h2>Números medidos con el cliente.</h2>
-      <div class="cases-grid">
-        <article class="case">
-          <span class="sec">Farmacia · workflow de facturas</span>
-          <h3>Las facturas dejan de teclearse.</h3>
-          <div class="kpis"><div><small>antes</small><b>≈ 9 min / factura</b></div><div><small>ahora</small><b>≈ 20 s</b></div><div><small>persona</small><b>solo excepciones</b></div></div>
-        </article>
-        <article class="case">
-          <span class="sec">Nutrición y salud · SEO y GEO</span>
-          <h3>Dieta Coherente, visible en Google y en la IA.</h3>
-          <div class="kpis"><div><small>trabajo</small><b>auditoría + contenidos</b></div><div><small>medimos</small><b>Google y asistentes</b></div><div><small>ritmo</small><b>informe mensual</b></div></div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- FORMATOS -->
-  <section id="consultoria" style="padding-top:0">
-    <div class="wrap">
-      <p class="kicker">Formas de trabajar juntos</p>
-      <h2>Elige cuánto quieres que nos involucremos.</h2>
-      <table class="fmt">
-        <thead><tr><th>formato</th><th>duración</th><th>sales con</th><th>precio</th></tr></thead>
-        <tbody>
-          <tr><td><h3>Llamada de diagnóstico</h3><p>Dos o tres oportunidades claras.</p></td><td class="m" data-l="duración">30 minutos</td><td class="m" data-l="sales con">Oportunidades priorizadas</td><td class="m" data-l="precio"><span class="free">Gratis</span></td></tr>
-          <tr><td><h3>Mapa de procesos</h3><p>Proceso dibujado, tiempos y retorno esperado.</p></td><td class="m" data-l="duración">1–2 semanas</td><td class="m" data-l="sales con">Informe + propuesta</td><td class="m" data-l="precio"><span class="price">Precio cerrado</span></td></tr>
-          <tr class="feat"><td><h3>Proyecto</h3><p>La herramienta, en entregas de dos semanas.</p></td><td class="m" data-l="duración">2–8 semanas</td><td class="m" data-l="sales con">Herramienta en producción</td><td class="m" data-l="precio"><span class="price">Precio cerrado</span></td></tr>
-          <tr><td><h3>Acompañamiento</h3><p>Tu equipo técnico, sin contratarlo.</p></td><td class="m" data-l="duración">Mensual</td><td class="m" data-l="sales con">Mejoras + soporte</td><td class="m" data-l="precio"><span class="price">Cuota mensual</span></td></tr>
-          <tr><td><h3>Formación</h3><p>Talleres con casos de tu sector.</p></td><td class="m" data-l="duración">½ o 1 día</td><td class="m" data-l="sales con">Equipo autónomo</td><td class="m" data-l="precio"><span class="price">Por sesión</span></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- NOSOTROS -->
-  <section id="nosotros" style="padding-top:0">
-    <div class="wrap about-grid">
-      <div>
-        <p class="kicker">Quién hay detrás</p>
-        <p class="quote" style="margin-top:22px">Las empresas que crecen no tienen más tecnología: quitan trabajo tonto de en medio.</p>
-        <div class="sign">
-          <span class="avatar" aria-hidden="true">R</span>
-          <div><b>Roque López</b><small>Fundador · Ingeniería industrial y gestión</small></div>
-        </div>
-      </div>
-      <ul class="principles">
-        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18h16M6 18V9M12 18V5M18 18v-7"/></svg><span>Primero el proceso, luego la herramienta.</span></li>
-        <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="3"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg><span>La herramienta más pequeña que funcione.</span></li>
-        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg><span>Números antes y después.</span></li>
-        <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>Tus datos, bajo control.</span></li>
-        <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Hablas con quien lo construye.</span></li>
-      </ul>
     </div>
   </section>
 
@@ -810,8 +727,7 @@
   <section class="faq" id="faq">
     <div class="wrap faq-grid">
       <div>
-        <p class="kicker">Preguntas frecuentes</p>
-        <h2>Lo que suelen preguntarnos.</h2>
+        <h2>Preguntas habituales.</h2>
       </div>
       <div class="faq-list">
         <details><summary>¿Y si no sé qué necesito?</summary><div class="answer">Es lo más habitual. En la llamada de diagnóstico te decimos qué herramienta encaja, en qué orden y qué ahorraría.</div></details>
@@ -828,7 +744,6 @@
   <section class="contact dark" id="contacto">
     <div class="wrap contact-grid">
       <div>
-        <p class="kicker">Contacto</p>
         <h2>Cuéntanos qué os quita más tiempo.</h2>
         <p class="lede">Te respondemos en menos de 24 horas laborables.</p>
         <ul class="perks">
@@ -910,9 +825,23 @@
 <script>
 (function(){
   document.getElementById('y').textContent = new Date().getFullYear();
-  const clock = document.getElementById('clock');
-  const tick = () => { const d = new Date(); clock.textContent = d.toLocaleTimeString('es-ES', {hour:'2-digit', minute:'2-digit', timeZone:'Europe/Madrid'}); };
-  tick(); setInterval(tick, 30000);
+  // tarjeta del Radar: licitaciones reales de hoy
+  (function(){
+    var D='https://raw.githubusercontent.com/rokelinho/tippingpoint-web/radar-data/', box=document.getElementById('radarlive'); if(!box) return;
+    var nf=new Intl.NumberFormat('es-ES',{maximumFractionDigits:0,useGrouping:'always'});
+    var esc=function(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+    var CC={ES11:'Galicia',ES12:'Asturias',ES13:'Cantabria',ES21:'País Vasco',ES22:'Navarra',ES23:'La Rioja',ES24:'Aragón',ES30:'Madrid',ES41:'Castilla y León',ES42:'Castilla-La Mancha',ES43:'Extremadura',ES51:'Cataluña',ES52:'C. Valenciana',ES53:'Baleares',ES61:'Andalucía',ES62:'Murcia',ES70:'Canarias'};
+    Promise.all([fetch(D+'index.json').then(function(r){return r.json();}),fetch(D+'d/71.json').then(function(r){return r.json();})]).then(function(a){
+      var hoy=new Date(); hoy.setHours(0,0,0,0);
+      var items=a[1].items.map(function(it){var p=it[7].split('-');return {it:it,d:Math.round((new Date(+p[0],+p[1]-1,+p[2])-hoy)/864e5)};})
+        .filter(function(x){return x.it[6]>=30000&&x.d>=5&&x.d<=60&&x.it[1].length<110&&CC[x.it[3].slice(0,4)];}).slice(0,5);
+      if(items.length<3) throw 0;
+      document.getElementById('rl-list').innerHTML=items.map(function(x){var t=x.it[1]; if(t===t.toUpperCase()) t=t.toLowerCase(); t=t.charAt(0).toUpperCase()+t.slice(1);
+        return '<div class="tender"><h4>'+esc(t)+'</h4><small>'+CC[x.it[3].slice(0,4)]+' · '+nf.format(x.it[6])+' € · cierra en '+x.d+' días</small></div>';}).join('');
+      document.getElementById('rl-n').textContent=nf.format(a[0].byDiv['71'])+' abiertas';
+      document.getElementById('rl-foot').textContent=nf.format(a[0].total)+' licitaciones abiertas hoy en toda España · pulsa para buscar las de tu sector';
+    }).catch(function(){ box.style.display='none'; });
+  })();
   // cabecera
   const top = document.getElementById('top');
   addEventListener('scroll', () => top.classList.toggle('scrolled', scrollY > 8), {passive:true});
